@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Account – PixanithingVault</title>
+    <meta name="description" content="Manage your account, orders, downloads, and wishlist at PixanithingVault." />
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Account Page Specific Styles -->
+    <style>
+        .account-main {
+            padding: 40px 0 60px;
+            background: var(--cream);
+            min-height: 70vh;
+        }
+        .welcome-header {
+            margin-bottom: 25px;
+        }
+        .welcome-header h2 {
+            color: var(--primary);
+            font-size: 28px;
+        }
+        .welcome-header h2 span {
+            color: var(--gold);
+        }
+        .welcome-header p {
+            color: var(--gray);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: var(--gold);
+            opacity: 0.3;
+            margin-bottom: 15px;
+        }
+        .empty-state h4 {
+            color: var(--primary);
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .wishlist-item .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+        .wishlist-item .item-info .thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            background: var(--light-gray);
+            flex-shrink: 0;
+        }
+        .wishlist-item .item-info .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .wishlist-item .item-info .details h4 {
+            color: var(--primary);
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        .wishlist-item .item-info .details .category {
+            color: var(--gray);
+            font-size: 13px;
+        }
+        .wishlist-item .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .wishlist-item .item-actions .price {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 18px;
+        }
+        .wishlist-item .item-actions .btn-sm {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .wishlist-item .item-actions .btn-sm.primary {
+            background: var(--primary);
+            color: white;
+        }
+        .wishlist-item .item-actions .btn-sm.primary:hover {
+            background: var(--primary-light);
+        }
+        .wishlist-item .item-actions .btn-sm.danger {
+            background: transparent;
+            color: #ff4444;
+        }
+        .wishlist-item .item-actions .btn-sm.danger:hover {
+            color: #cc0000;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+        .loading-spinner i {
+            font-size: 40px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .settings-form .form-row {
+                grid-template-columns: 1fr;
+            }
+            .order-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            .order-item .order-total {
+                align-self: center;
+            }
+            .wishlist-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            .wishlist-item .item-info {
+                flex-direction: column;
+            }
+            .wishlist-item .item-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .guest-section {
+                padding: 40px 15px;
+                margin: 0 10px;
+            }
+            .guest-section .guest-icon {
+                font-size: 60px;
+            }
+            .guest-section h2 {
+                font-size: 22px;
+            }
+            .guest-section .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .guest-section .btn-group .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+            }
+            .stat-card .number {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .stat-card {
+                padding: 15px;
+            }
+            .stat-card .icon {
+                font-size: 24px;
+            }
+            .stat-card .number {
+                font-size: 20px;
+            }
+            .settings-form {
+                padding: 18px;
+            }
+            .settings-form .btn-group {
+                flex-direction: column;
+            }
+            .settings-form .btn-group .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    HEADER
+    ============================================ -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+
+            <nav id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="cart.html" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="javascript:void(0)" onclick="toggleSearch()" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <div id="authLinks" style="display:none;">
+                    <a href="javascript:void(0)" onclick="openLoginModal()" class="nav-login-link" title="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="javascript:void(0)" onclick="openRegisterModal()" class="nav-register-link" title="Register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <div id="userLinks">
+                    <span class="user-greeting" id="headerUserName">
+                        <i class="fas fa-user-circle"></i> User
+                    </span>
+                    <a href="account.html" class="nav-login-link" title="My Account" style="background: var(--gold); border-color: var(--gold);">
+                        <i class="fas fa-user"></i> My Account
+                    </a>
+                    <a href="javascript:void(0)" onclick="logoutUser()" class="nav-register-link" title="Logout" style="background: transparent; border-color: #ff4444; color: #ff4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+
+                <div class="hamburger" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="searchBar" style="display: none; width: 100%; padding: 15px 0; border-top: 2px solid var(--gold); margin-top: 10px;">
+                <div style="display: flex; gap: 10px; max-width: 600px; margin: 0 auto; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="searchInput" placeholder="Search wedding templates, plugins, fonts..."
+                           style="flex: 1; min-width: 200px; padding: 14px 25px; border: 2px solid var(--gold); border-radius: 50px; font-size: 16px; outline: none;">
+                    <button onclick="performSearch()"
+                            style="padding: 14px 30px; background: var(--gold); border: none; border-radius: 50px; color: var(--dark); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button onclick="closeSearch()"
+                            style="padding: 14px 20px; background: #ff4444; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="searchResults" style="max-width: 600px; margin: 15px auto 0;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    BREADCRUMB
+    ============================================ -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> / <span>My Account</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+    ACCOUNT MAIN
+    ============================================ -->
+    <section class="account-main">
+        <div class="container">
+
+            <div id="accountContent">
+                <!-- Loading State -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading your account...</p>
+                </div>
+                <!-- Content will be rendered by JavaScript -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    WHATSAPP FLOATING BUTTON
+    ============================================ -->
+    <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20need%20help%20with%20my%20account!"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">💬 Need help?</span>
+    </a>
+
+    <!-- ============================================
+    LOGIN / REGISTER MODAL
+    ============================================ -->
+    <div id="userModal">
+        <div>
+            <button class="close-modal" onclick="closeUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-header">
+                <div class="icon">👤</div>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to access your downloads &amp; orders</p>
+            </div>
+
+            <div class="modal-tabs">
+                <button id="loginTab" class="active" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button id="registerTab" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="google-signin-wrapper">
+                    <div id="g_id_onload"
+                         data-client_id="240069241437-8sgrtkm27a673dnkinit3v3fsb4vu00s.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="divider-line">or sign in with email</div>
+
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <div class="form-row">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Don't have an account? <a href="#" onclick="switchTab('register')">Register here</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm">
+                <form onsubmit="handleRegister(event)">
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                    <input type="password" id="registerPassword" placeholder="Password (min 6 chars)" minlength="6" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px;">
+                            <input type="checkbox" required> I agree to the <a href="terms.html" style="color:var(--gold);">Terms &amp; Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit btn-submit-dark">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Already have an account? <a href="#" onclick="switchTab('login')">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script src="js/script.js"></script>
+
+    <!-- Account Page Specific JavaScript -->
+    <script>
+        // ============================================
+        // STATE
+        // ============================================
+
+        let currentUser = null;
+        let userOrders = [];
+        let userWishlist = [];
+
+        // ============================================
+        // GET USER FROM LOCALSTORAGE
+        // ============================================
+
+        function getCurrentUser() {
+            try {
+                return JSON.parse(localStorage.getItem('currentUser'));
+            } catch {
+                return null;
+            }
+        }
+
+        // ============================================
+        // LOAD ACCOUNT CONTENT
+        // ============================================
+
+        async function loadAccountContent() {
+            const container = document.getElementById('accountContent');
+            const spinner = document.getElementById('loadingSpinner');
+
+            currentUser = getCurrentUser();
+
+            if (currentUser) {
+                await loadUserData();
+                renderDashboard();
+            } else {
+                renderGuestView();
+            }
+
+            spinner.style.display = 'none';
+        }
+
+        // ============================================
+        // LOAD USER DATA FROM BACKEND
+        // ============================================
+
+        async function loadUserData() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                // Fetch orders
+                const ordersRes = await fetch(`${API_BASE_URL}/orders`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (ordersRes.ok) {
+                    userOrders = await ordersRes.json();
+                }
+
+                // Fetch wishlist (using localStorage as fallback)
+                userWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // ============================================
+        // RENDER GUEST VIEW
+        // ============================================
+
+        function renderGuestView() {
+            const container = document.getElementById('accountContent');
+
+            container.innerHTML = `
+                <div class="guest-section">
+                    <div class="guest-icon">👤</div>
+                    <h2>Welcome to Your Account</h2>
+                    <p>Sign in to access your orders, downloads, wishlist, and manage your profile.</p>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="openLoginModal()">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button class="btn btn-dark" onclick="openRegisterModal()">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </div>
+                    <div class="secure-note">
+                        <i class="fas fa-lock"></i> Your data is safe and secure with us.
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // RENDER DASHBOARD
+        // ============================================
+
+        function renderDashboard() {
+            const container = document.getElementById('accountContent');
+
+            container.innerHTML = `
+                <div class="dashboard-grid">
+
+                    <!-- Sidebar -->
+                    <aside class="account-sidebar">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3 id="sidebarUserName">${currentUser.name || 'User'}</h3>
+                            <p id="sidebarUserEmail">${currentUser.email || ''}</p>
+                            <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                        </div>
+
+                        <nav class="sidebar-menu" id="sidebarMenu">
+                            <a href="#" class="active" data-tab="dashboard" onclick="switchTab('dashboard', this)">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                            <a href="#" data-tab="orders" onclick="switchTab('orders', this)">
+                                <i class="fas fa-shopping-bag"></i> My Orders
+                            </a>
+                            <a href="#" data-tab="downloads" onclick="switchTab('downloads', this)">
+                                <i class="fas fa-download"></i> My Downloads
+                            </a>
+                            <a href="#" data-tab="wishlist" onclick="switchTab('wishlist', this)">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a>
+                            <a href="#" data-tab="settings" onclick="switchTab('settings', this)">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <a href="#" class="logout" onclick="logoutUser()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </nav>
+                    </aside>
+
+                    <!-- Main Content -->
+                    <div class="account-content">
+
+                        <!-- Welcome Header -->
+                        <div class="welcome-header">
+                            <h2>Welcome Back, <span id="welcomeName">${currentUser.name || 'User'}</span>!</h2>
+                            <p>Here's what's happening with your account today.</p>
+                        </div>
+
+                        <!-- Dashboard Tab -->
+                        <div id="tab-dashboard" class="tab-content active">
+                            <div class="dashboard-stats" id="statsContainer"></div>
+                            <div style="background: var(--white); border-radius: var(--border-radius); padding: 25px; box-shadow: var(--shadow);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                    <h3 style="color: var(--primary);">Recent Orders</h3>
+                                    <a href="#" onclick="switchTab('orders', document.querySelector('[data-tab=orders]'))" style="color: var(--gold); font-size: 14px;">
+                                        View All <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                                <div id="recentOrders"></div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Tab -->
+                        <div id="tab-orders" class="tab-content">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">My Orders</h3>
+                            <div id="ordersList"></div>
+                        </div>
+
+                        <!-- Downloads Tab -->
+                        <div id="tab-downloads" class="tab-content">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">My Downloads</h3>
+                            <div id="downloadsList"></div>
+                        </div>
+
+                        <!-- Wishlist Tab -->
+                        <div id="tab-wishlist" class="tab-content">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">My Wishlist</h3>
+                            <div id="wishlistList"></div>
+                        </div>
+
+                        <!-- Settings Tab -->
+                        <div id="tab-settings" class="tab-content">
+                            <h3 style="color: var(--primary); margin-bottom: 20px;">Account Settings</h3>
+                            <form class="settings-form" id="settingsForm" onsubmit="updateProfile(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Full Name</label>
+                                        <input type="text" id="settingsName" placeholder="Your full name" value="${currentUser.name || ''}" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <input type="email" id="settingsEmail" placeholder="your@email.com" value="${currentUser.email || ''}" required />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Phone Number</label>
+                                        <input type="tel" id="settingsPhone" placeholder="+1 (555) 123-4567" value="${currentUser.phone || ''}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <select id="settingsCountry">
+                                            <option value="">Select Country</option>
+                                            <option value="US" ${currentUser.country === 'US' ? 'selected' : ''}>United States</option>
+                                            <option value="UK" ${currentUser.country === 'UK' ? 'selected' : ''}>United Kingdom</option>
+                                            <option value="CA" ${currentUser.country === 'CA' ? 'selected' : ''}>Canada</option>
+                                            <option value="AU" ${currentUser.country === 'AU' ? 'selected' : ''}>Australia</option>
+                                            <option value="IN" ${currentUser.country === 'IN' ? 'selected' : ''}>India</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Change Password <span style="font-weight: 400; color: var(--gray); font-size: 13px;">(leave blank to keep current)</span></label>
+                                    <input type="password" id="settingsNewPassword" placeholder="New password (min 6 characters)" minlength="6" />
+                                </div>
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" style="border-color: var(--gray); color: var(--gray);" onclick="resetSettings()">
+                                        <i class="fas fa-undo"></i> Reset
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+
+            // Load stats and recent orders
+            renderStats();
+            renderRecentOrders();
+            renderOrders();
+            renderDownloads();
+            renderWishlist();
+            resetSettings();
+        }
+
+        // ============================================
+        // RENDER STATS
+        // ============================================
+
+        function renderStats() {
+            const container = document.getElementById('statsContainer');
+            if (!container) return;
+
+            const ordersCount = userOrders.length || 0;
+            const downloadsCount = JSON.parse(localStorage.getItem('userDownloads') || '[]').length || 0;
+            const wishlistCount = userWishlist.length || 0;
+
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="icon">📦</div>
+                    <div class="number">${ordersCount}</div>
+                    <div class="label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">⬇️</div>
+                    <div class="number">${downloadsCount}</div>
+                    <div class="label">Downloads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">❤️</div>
+                    <div class="number">${wishlistCount}</div>
+                    <div class="label">Wishlist Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">⭐</div>
+                    <div class="number">0</div>
+                    <div class="label">Reviews</div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // RENDER RECENT ORDERS (Dashboard)
+        // ============================================
+
+        function renderRecentOrders() {
+            const container = document.getElementById('recentOrders');
+            if (!container) return;
+
+            const recent = userOrders.slice(0, 3);
+
+            if (recent.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h4>No Orders Yet</h4>
+                        <p>You haven't placed any orders. Start shopping to see your orders here!</p>
+                        <a href="shop.html" class="btn btn-primary">Start Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            recent.forEach(order => {
+                const statusClass = order.status || 'pending';
+                const statusDisplay = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
+                const itemsCount = order.items ? order.items.length : 0;
+                const total = order.total || 0;
+
+                html += `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>${order._id ? 'Order #' + order._id.slice(-8).toUpperCase() : 'Order'}</h4>
+                            <p>${new Date(order.createdAt).toLocaleDateString()} • ${itemsCount} item${itemsCount > 1 ? 's' : ''}</p>
+                        </div>
+                        <div>
+                            <span class="order-status ${statusClass}">${statusDisplay}</span>
+                            <div class="order-total">$${total.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // RENDER ORDERS (Full List)
+        // ============================================
+
+        function renderOrders() {
+            const container = document.getElementById('ordersList');
+            if (!container) return;
+
+            if (userOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h4>No Orders Found</h4>
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="shop.html" class="btn btn-primary">Start Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            userOrders.forEach(order => {
+                const statusClass = order.status || 'pending';
+                const statusDisplay = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
+                const itemsCount = order.items ? order.items.length : 0;
+                const total = order.total || 0;
+
+                html += `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>${order._id ? 'Order #' + order._id.slice(-8).toUpperCase() : 'Order'}</h4>
+                            <p>${new Date(order.createdAt).toLocaleDateString()} • ${itemsCount} item${itemsCount > 1 ? 's' : ''}</p>
+                        </div>
+                        <div>
+                            <span class="order-status ${statusClass}">${statusDisplay}</span>
+                            <div class="order-total">$${total.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // RENDER DOWNLOADS
+        // ============================================
+
+        function renderDownloads() {
+            const container = document.getElementById('downloadsList');
+            if (!container) return;
+
+            const downloads = JSON.parse(localStorage.getItem('userDownloads')) || [];
+
+            if (downloads.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-download"></i>
+                        <h4>No Downloads</h4>
+                        <p>You haven't downloaded any products yet. Purchase and download your templates here!</p>
+                        <a href="shop.html" class="btn btn-primary">Browse Products</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            downloads.forEach(download => {
+                html += `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>${download.name || 'Product'}</h4>
+                            <p>${download.date || 'Downloaded'} • ${download.size || '—'}</p>
+                        </div>
+                        <div>
+                            <a href="#" class="btn btn-primary" style="padding: 8px 20px; font-size: 14px;">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // RENDER WISHLIST
+        // ============================================
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlistList');
+            if (!container) return;
+
+            if (userWishlist.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-heart"></i>
+                        <h4>Your Wishlist is Empty</h4>
+                        <p>Save your favorite products to your wishlist and come back to them later!</p>
+                        <a href="shop.html" class="btn btn-primary">Browse Products</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            userWishlist.forEach((item, index) => {
+                const name = item.name || 'Product';
+                const category = item.category || 'Uncategorized';
+                const price = item.price || '$0.00';
+                const image = item.image || 'https://via.placeholder.com/60x60/lightgray/666?text=No+Image';
+
+                html += `
+                    <div class="wishlist-item">
+                        <div class="item-info">
+                            <div class="thumb">
+                                <img src="${image}" alt="${name}" loading="lazy" />
+                            </div>
+                            <div class="details">
+                                <h4>${name}</h4>
+                                <div class="category">${category}</div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <span class="price">${price}</span>
+                            <a href="product-detail.html" class="btn-sm primary">View</a>
+                            <button class="btn-sm danger" onclick="removeWishlistItem(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // REMOVE WISHLIST ITEM
+        // ============================================
+
+        function removeWishlistItem(index) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            wishlist.splice(index, 1);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            userWishlist = wishlist;
+            renderWishlist();
+            renderStats();
+            showNotification('🗑️ Removed', 'Item removed from wishlist.');
+        }
+
+        // ============================================
+        // SWITCH TAB
+        // ============================================
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            const target = document.getElementById('tab-' + tabName);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+
+            if (tabName === 'orders') renderOrders();
+            if (tabName === 'downloads') renderDownloads();
+            if (tabName === 'wishlist') renderWishlist();
+            if (tabName === 'settings') resetSettings();
+        }
+
+        // ============================================
+        // UPDATE PROFILE (Settings)
+        // ============================================
+
+        async function updateProfile(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('settingsName').value.trim();
+            const email = document.getElementById('settingsEmail').value.trim();
+            const phone = document.getElementById('settingsPhone').value.trim();
+            const country = document.getElementById('settingsCountry').value;
+            const newPassword = document.getElementById('settingsNewPassword').value.trim();
+
+            if (!name || !email) {
+                alert('⚠️ Name and Email are required!');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('❌ Please login first.');
+                return;
+            }
+
+            const updateData = { name, email, phone, country };
+            if (newPassword && newPassword.length >= 6) {
+                updateData.password = newPassword;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('currentUser', JSON.stringify(data));
+                    currentUser = data;
+                    showNotification('✅ Updated!', 'Profile updated successfully.');
+                    // Update sidebar name
+                    const sidebarName = document.getElementById('sidebarUserName');
+                    const welcomeName = document.getElementById('welcomeName');
+                    if (sidebarName) sidebarName.textContent = data.name;
+                    if (welcomeName) welcomeName.textContent = data.name;
+                    resetSettings();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Failed to update profile.');
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
+        }
+
+        // ============================================
+        // RESET SETTINGS FORM
+        // ============================================
+
+        function resetSettings() {
+            if (!currentUser) return;
+
+            const name = document.getElementById('settingsName');
+            const email = document.getElementById('settingsEmail');
+            const phone = document.getElementById('settingsPhone');
+            const country = document.getElementById('settingsCountry');
+            const password = document.getElementById('settingsNewPassword');
+
+            if (name) name.value = currentUser.name || '';
+            if (email) email.value = currentUser.email || '';
+            if (phone) phone.value = currentUser.phone || '';
+            if (country) country.value = currentUser.country || '';
+            if (password) password.value = '';
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAccountContent();
+
+            if (typeof fetchCartAndUpdateBadge === 'function') {
+                fetchCartAndUpdateBadge();
+            }
+
+            if (typeof updateHeader === 'function') {
+                updateHeader();
+            }
+
+            console.log('📄 Account page loaded');
+        });
+    </script>
+
+</body>
+</html>

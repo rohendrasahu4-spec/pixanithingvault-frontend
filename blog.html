@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog – PixanithingVault</title>
+    <meta name="description" content="Read the latest wedding design tips, video editing tutorials, and inspiration from PixanithingVault." />
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Blog Page Specific Styles -->
+    <style>
+        .blog-hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 60px 0 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23D4A54A" opacity="0.2"/><circle cx="80" cy="40" r="3" fill="%23D4A54A" opacity="0.15"/><circle cx="50" cy="80" r="4" fill="%23D4A54A" opacity="0.1"/></svg>');
+            background-size: 200px;
+        }
+        .blog-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .blog-hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+        .blog-hero h1 span {
+            color: var(--gold);
+        }
+        .blog-hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .blog-main {
+            padding: 40px 0 60px;
+            background: var(--cream);
+        }
+        .blog-grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .blog-post-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 30px;
+        }
+        .blog-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .blog-post-card .post-image {
+            height: 260px;
+            background: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        .blog-post-card .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .blog-post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+        .blog-post-card .post-image .post-category {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .blog-post-card .post-content {
+            padding: 25px;
+        }
+        .blog-post-card .post-content .post-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        .blog-post-card .post-content .post-meta i {
+            margin-right: 5px;
+        }
+        .blog-post-card .post-content h3 {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+        .blog-post-card .post-content h3:hover {
+            color: var(--gold);
+        }
+        .blog-post-card .post-content p {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        .blog-post-card .post-content .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .blog-post-card .post-content .read-more:hover {
+            gap: 14px;
+            color: var(--gold-dark);
+        }
+
+        .blog-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+        .sidebar-widget {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+        }
+        .sidebar-widget:last-child {
+            margin-bottom: 0;
+        }
+        .sidebar-widget h4 {
+            color: var(--primary);
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gold);
+        }
+        .sidebar-widget .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        .sidebar-widget .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .sidebar-widget .search-box input:focus {
+            border-color: var(--gold);
+        }
+        .sidebar-widget .search-box button {
+            padding: 10px 18px;
+            background: var(--gold);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        .sidebar-widget .search-box button:hover {
+            background: var(--gold-light);
+        }
+        .sidebar-widget .category-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .sidebar-widget .category-list li:last-child {
+            border-bottom: none;
+        }
+        .sidebar-widget .category-list li:hover {
+            padding-left: 5px;
+            color: var(--primary);
+        }
+        .sidebar-widget .category-list li a {
+            color: var(--gray);
+            transition: var(--transition);
+        }
+        .sidebar-widget .category-list li a:hover {
+            color: var(--primary);
+        }
+        .sidebar-widget .category-list li .count {
+            background: var(--light-gray);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .recent-post-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-gray);
+            align-items: center;
+        }
+        .recent-post-item:last-child {
+            border-bottom: none;
+        }
+        .recent-post-item .recent-img {
+            width: 70px;
+            height: 70px;
+            border-radius: var(--border-radius-sm);
+            background: var(--light-gray);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .recent-post-item .recent-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .recent-post-item .recent-info h5 {
+            font-size: 14px;
+            color: var(--primary);
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .recent-post-item .recent-info h5:hover {
+            color: var(--gold);
+        }
+        .recent-post-item .recent-info .date {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag-cloud a {
+            padding: 5px 14px;
+            background: var(--light-gray);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+        .tag-cloud a:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+        }
+        .blog-pagination a {
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius-sm);
+            color: var(--gray);
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .blog-pagination a:hover {
+            border-color: var(--gold);
+            color: var(--primary);
+        }
+        .blog-pagination a.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--dark);
+        }
+        .blog-pagination a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 992px) {
+            .blog-grid-container {
+                grid-template-columns: 1fr;
+            }
+            .blog-sidebar {
+                position: static;
+            }
+        }
+        @media (max-width: 768px) {
+            .blog-hero h1 {
+                font-size: 32px;
+            }
+            .blog-post-card .post-image {
+                height: 200px;
+            }
+            .blog-post-card .post-content h3 {
+                font-size: 18px;
+            }
+            .sidebar-widget .search-box {
+                flex-wrap: wrap;
+            }
+            .sidebar-widget .search-box input {
+                width: 100%;
+            }
+            .sidebar-widget .search-box button {
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .blog-hero h1 {
+                font-size: 26px;
+            }
+            .blog-post-card .post-image {
+                height: 160px;
+            }
+            .blog-post-card .post-content {
+                padding: 18px;
+            }
+            .blog-post-card .post-content .post-meta {
+                flex-wrap: wrap;
+                gap: 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    HEADER
+    ============================================ -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+
+            <nav id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="blog.html" class="active">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="cart.html" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="javascript:void(0)" onclick="toggleSearch()" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <div id="authLinks">
+                    <a href="javascript:void(0)" onclick="openLoginModal()" class="nav-login-link" title="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="javascript:void(0)" onclick="openRegisterModal()" class="nav-register-link" title="Register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <div id="userLinks" style="display: none;">
+                    <span class="user-greeting" id="headerUserName">
+                        <i class="fas fa-user-circle"></i> User
+                    </span>
+                    <a href="account.html" class="nav-login-link" title="My Account" style="background: var(--gold); border-color: var(--gold);">
+                        <i class="fas fa-user"></i> My Account
+                    </a>
+                    <a href="javascript:void(0)" onclick="logoutUser()" class="nav-register-link" title="Logout" style="background: transparent; border-color: #ff4444; color: #ff4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+
+                <div class="hamburger" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="searchBar" style="display: none; width: 100%; padding: 15px 0; border-top: 2px solid var(--gold); margin-top: 10px;">
+                <div style="display: flex; gap: 10px; max-width: 600px; margin: 0 auto; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="searchInput" placeholder="Search wedding templates, plugins, fonts..."
+                           style="flex: 1; min-width: 200px; padding: 14px 25px; border: 2px solid var(--gold); border-radius: 50px; font-size: 16px; outline: none;">
+                    <button onclick="performSearch()"
+                            style="padding: 14px 30px; background: var(--gold); border: none; border-radius: 50px; color: var(--dark); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button onclick="closeSearch()"
+                            style="padding: 14px 20px; background: #ff4444; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="searchResults" style="max-width: 600px; margin: 15px auto 0;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    BREADCRUMB
+    ============================================ -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> / <span>Blog</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+    BLOG HERO
+    ============================================ -->
+    <section class="blog-hero">
+        <div class="container blog-hero-content">
+            <h1>Design <span>Inspiration</span> &amp; Tips</h1>
+            <p>Expert advice, creative ideas, and behind-the-scenes insights for wedding designers and videographers.</p>
+        </div>
+    </section>
+
+    <!-- ============================================
+    BLOG MAIN CONTENT
+    ============================================ -->
+    <section class="blog-main">
+        <div class="container">
+
+            <div class="blog-grid-container">
+
+                <!-- ===== BLOG POSTS ===== -->
+                <div class="blog-posts">
+
+                    <!-- Post 1 -->
+                    <article class="blog-post-card">
+                        <div class="post-image">
+                            <img src="https://via.placeholder.com/800x400/6B2D5B/FFFFFF?text=Wedding+Editing+Tips" alt="Wedding Video Editing Tips" loading="lazy" />
+                            <span class="post-category">Editing Tips</span>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar-alt"></i> Dec 15, 2025</span>
+                                <span><i class="far fa-user"></i> By Aarav Sharma</span>
+                                <span><i class="far fa-comment"></i> 8 Comments</span>
+                            </div>
+                            <h3>10 Wedding Video Editing Tips for Beginners</h3>
+                            <p>Learn the essential techniques to make your wedding videos look professional and cinematic. From color grading to storytelling, we've got you covered.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Post 2 -->
+                    <article class="blog-post-card">
+                        <div class="post-image">
+                            <img src="https://via.placeholder.com/800x400/8B4A7A/FFFFFF?text=Wedding+Trends" alt="Wedding Design Trends" loading="lazy" />
+                            <span class="post-category">Trends</span>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar-alt"></i> Dec 10, 2025</span>
+                                <span><i class="far fa-user"></i> By Priya Patel</span>
+                                <span><i class="far fa-comment"></i> 12 Comments</span>
+                            </div>
+                            <h3>Top 5 Wedding Design Trends for 2026</h3>
+                            <p>Discover the hottest wedding design trends for the upcoming year. From vintage aesthetics to modern minimalism, find inspiration for your next project.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Post 3 -->
+                    <article class="blog-post-card">
+                        <div class="post-image">
+                            <img src="https://via.placeholder.com/800x400/D4A54A/FFFFFF?text=Typography+Tips" alt="Typography Tips" loading="lazy" />
+                            <span class="post-category">Typography</span>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar-alt"></i> Dec 5, 2025</span>
+                                <span><i class="far fa-user"></i> By Rahul Verma</span>
+                                <span><i class="far fa-comment"></i> 5 Comments</span>
+                            </div>
+                            <h3>The Art of Wedding Typography: Font Pairing Guide</h3>
+                            <p>Choosing the right fonts for wedding invitations and graphics can make all the difference. Learn how to pair fonts like a professional designer.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Post 4 -->
+                    <article class="blog-post-card">
+                        <div class="post-image">
+                            <img src="https://via.placeholder.com/800x400/3D1A34/FFFFFF?text=Plugin+Guide" alt="Plugin Guide" loading="lazy" />
+                            <span class="post-category">Plugins</span>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar-alt"></i> Nov 28, 2025</span>
+                                <span><i class="far fa-user"></i> By Sneha Reddy</span>
+                                <span><i class="far fa-comment"></i> 3 Comments</span>
+                            </div>
+                            <h3>5 Must-Have Plugins for Wedding Videographers</h3>
+                            <p>Speed up your workflow and enhance your edits with these essential plugins. From color grading to transitions, these tools will elevate your wedding films.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Blog Pagination -->
+                    <div class="blog-pagination">
+                        <a href="#" class="disabled"><i class="fas fa-chevron-left"></i></a>
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+
+                </div>
+
+                <!-- ===== SIDEBAR ===== -->
+                <aside class="blog-sidebar">
+
+                    <!-- Search Widget -->
+                    <div class="sidebar-widget">
+                        <h4><i class="fas fa-search" style="color: var(--gold);"></i> Search Blog</h4>
+                        <div class="search-box">
+                            <input type="text" id="blogSearchInput" placeholder="Search articles..." />
+                            <button onclick="searchBlog()"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="sidebar-widget">
+                        <h4><i class="fas fa-folder-open" style="color: var(--gold);"></i> Categories</h4>
+                        <ul class="category-list">
+                            <li><a href="#">Editing Tips</a> <span class="count">12</span></li>
+                            <li><a href="#">Wedding Trends</a> <span class="count">8</span></li>
+                            <li><a href="#">Typography</a> <span class="count">6</span></li>
+                            <li><a href="#">Plugins</a> <span class="count">5</span></li>
+                            <li><a href="#">Color Grading</a> <span class="count">4</span></li>
+                            <li><a href="#">Inspiration</a> <span class="count">7</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Recent Posts Widget -->
+                    <div class="sidebar-widget">
+                        <h4><i class="fas fa-clock" style="color: var(--gold);"></i> Recent Posts</h4>
+
+                        <div class="recent-post-item">
+                            <div class="recent-img">
+                                <img src="https://via.placeholder.com/70x70/6B2D5B/FFFFFF?text=Post+1" alt="Recent Post" loading="lazy" />
+                            </div>
+                            <div class="recent-info">
+                                <h5>10 Wedding Video Editing Tips for Beginners</h5>
+                                <span class="date">Dec 15, 2025</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-post-item">
+                            <div class="recent-img">
+                                <img src="https://via.placeholder.com/70x70/8B4A7A/FFFFFF?text=Post+2" alt="Recent Post" loading="lazy" />
+                            </div>
+                            <div class="recent-info">
+                                <h5>Top 5 Wedding Design Trends for 2026</h5>
+                                <span class="date">Dec 10, 2025</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-post-item">
+                            <div class="recent-img">
+                                <img src="https://via.placeholder.com/70x70/D4A54A/FFFFFF?text=Post+3" alt="Recent Post" loading="lazy" />
+                            </div>
+                            <div class="recent-info">
+                                <h5>The Art of Wedding Typography: Font Pairing Guide</h5>
+                                <span class="date">Dec 5, 2025</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-post-item">
+                            <div class="recent-img">
+                                <img src="https://via.placeholder.com/70x70/3D1A34/FFFFFF?text=Post+4" alt="Recent Post" loading="lazy" />
+                            </div>
+                            <div class="recent-info">
+                                <h5>5 Must-Have Plugins for Wedding Videographers</h5>
+                                <span class="date">Nov 28, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags Widget -->
+                    <div class="sidebar-widget">
+                        <h4><i class="fas fa-tags" style="color: var(--gold);"></i> Tags</h4>
+                        <div class="tag-cloud">
+                            <a href="#">Wedding</a>
+                            <a href="#">Video Editing</a>
+                            <a href="#">Typography</a>
+                            <a href="#">Color Grading</a>
+                            <a href="#">Plugins</a>
+                            <a href="#">Trends</a>
+                            <a href="#">Inspiration</a>
+                            <a href="#">Tutorial</a>
+                            <a href="#">Design</a>
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    WHATSAPP FLOATING BUTTON
+    ============================================ -->
+    <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20need%20help%20with%20wedding%20templates!"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">💬 Chat with us!</span>
+    </a>
+
+    <!-- ============================================
+    LOGIN / REGISTER MODAL
+    ============================================ -->
+    <div id="userModal">
+        <div>
+            <button class="close-modal" onclick="closeUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-header">
+                <div class="icon">👤</div>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to access your downloads &amp; orders</p>
+            </div>
+
+            <div class="modal-tabs">
+                <button id="loginTab" class="active" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button id="registerTab" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="google-signin-wrapper">
+                    <div id="g_id_onload"
+                         data-client_id="240069241437-8sgrtkm27a673dnkinit3v3fsb4vu00s.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="divider-line">or sign in with email</div>
+
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <div class="form-row">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Don't have an account? <a href="#" onclick="switchTab('register')">Register here</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm">
+                <form onsubmit="handleRegister(event)">
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                    <input type="password" id="registerPassword" placeholder="Password (min 6 chars)" minlength="6" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px;">
+                            <input type="checkbox" required> I agree to the <a href="terms.html" style="color:var(--gold);">Terms &amp; Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit btn-submit-dark">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Already have an account? <a href="#" onclick="switchTab('login')">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script src="js/script.js"></script>
+
+    <!-- Blog Page Specific JavaScript -->
+    <script>
+        function searchBlog() {
+            const input = document.getElementById('blogSearchInput');
+            if (!input) return;
+            const query = input.value.trim();
+            if (query === '') {
+                alert('⚠️ Please enter a search term!');
+                return;
+            }
+            window.location.href = 'search.html?q=' + encodeURIComponent(query);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update cart badge
+            if (typeof fetchCartAndUpdateBadge === 'function') {
+                fetchCartAndUpdateBadge();
+            }
+
+            // Update header
+            if (typeof updateHeader === 'function') {
+                updateHeader();
+            }
+
+            // Enter key for blog search
+            const blogSearchInput = document.getElementById('blogSearchInput');
+            if (blogSearchInput) {
+                blogSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        searchBlog();
+                    }
+                });
+            }
+
+            console.log('📄 Blog page loaded');
+        });
+    </script>
+
+</body>
+</html>

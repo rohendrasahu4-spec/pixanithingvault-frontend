@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ – PixanithingVault</title>
+    <meta name="description" content="Frequently asked questions about PixanithingVault, wedding templates, plugins, and more." />
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- FAQ Page Specific Styles -->
+    <style>
+        .faq-hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 60px 0 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .faq-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23D4A54A" opacity="0.2"/><circle cx="80" cy="40" r="3" fill="%23D4A54A" opacity="0.15"/><circle cx="50" cy="80" r="4" fill="%23D4A54A" opacity="0.1"/></svg>');
+            background-size: 200px;
+        }
+        .faq-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faq-hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+        .faq-hero h1 span {
+            color: var(--gold);
+        }
+        .faq-hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .faq-main {
+            padding: 60px 0;
+            background: var(--cream);
+        }
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .faq-categories button {
+            padding: 10px 24px;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            background: var(--white);
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .faq-categories button:hover {
+            border-color: var(--gold);
+            color: var(--primary);
+        }
+        .faq-categories button.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--dark);
+        }
+
+        .faq-accordion-item {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            border-left: 4px solid var(--gold);
+        }
+        .faq-accordion-item:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .faq-accordion-item .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+            user-select: none;
+        }
+        .faq-accordion-item .faq-question:hover {
+            background: var(--cream);
+        }
+        .faq-accordion-item .faq-question .question-text {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--primary);
+            flex: 1;
+        }
+        .faq-accordion-item .faq-question .question-icon {
+            font-size: 18px;
+            color: var(--gold);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .faq-accordion-item .faq-question .question-icon i {
+            transition: transform 0.3s ease;
+        }
+        .faq-accordion-item.active .faq-question .question-icon i {
+            transform: rotate(180deg);
+        }
+        .faq-accordion-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            padding: 0 25px;
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .faq-accordion-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 25px 22px 25px;
+        }
+        .faq-accordion-item .faq-answer ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+        .faq-accordion-item .faq-answer ul li {
+            margin-bottom: 4px;
+        }
+        .faq-accordion-item .faq-answer a {
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .faq-accordion-item .faq-answer a:hover {
+            color: var(--gold-dark);
+            text-decoration: underline;
+        }
+
+        .faq-category-tag {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--light-gray);
+            color: var(--gray);
+            margin-left: 10px;
+        }
+        .faq-category-tag.general { background: #e3f2fd; color: #1565c0; }
+        .faq-category-tag.account { background: #fce4ec; color: #c62828; }
+        .faq-category-tag.products { background: #e8f5e9; color: #2e7d32; }
+        .faq-category-tag.payment { background: #fff3e0; color: #e65100; }
+        .faq-category-tag.technical { background: #f3e5f5; color: #6a1b9a; }
+
+        .faq-support-cta {
+            text-align: center;
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 40px;
+        }
+        .faq-support-cta h3 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .faq-support-cta p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        .faq-support-cta .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .faq-support-cta .btn-group .btn {
+            min-width: 180px;
+        }
+
+        @media (max-width: 768px) {
+            .faq-hero h1 {
+                font-size: 32px;
+            }
+            .faq-hero p {
+                font-size: 16px;
+            }
+            .faq-accordion-item .faq-question {
+                padding: 16px 18px;
+            }
+            .faq-accordion-item .faq-question .question-text {
+                font-size: 15px;
+            }
+            .faq-accordion-item .faq-answer {
+                font-size: 14px;
+            }
+            .faq-accordion-item.active .faq-answer {
+                padding: 0 18px 18px 18px;
+            }
+            .faq-categories button {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            .faq-support-cta {
+                padding: 30px 20px;
+            }
+            .faq-support-cta h3 {
+                font-size: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .faq-hero h1 {
+                font-size: 26px;
+            }
+            .faq-hero p {
+                font-size: 14px;
+            }
+            .faq-accordion-item .faq-question {
+                padding: 14px 14px;
+            }
+            .faq-accordion-item .faq-question .question-text {
+                font-size: 14px;
+            }
+            .faq-accordion-item.active .faq-answer {
+                padding: 0 14px 14px 14px;
+            }
+            .faq-categories {
+                gap: 6px;
+            }
+            .faq-categories button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .faq-support-cta .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .faq-support-cta .btn-group .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            .faq-category-tag {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    HEADER
+    ============================================ -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+
+            <nav id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="cart.html" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="javascript:void(0)" onclick="toggleSearch()" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <div id="authLinks">
+                    <a href="javascript:void(0)" onclick="openLoginModal()" class="nav-login-link" title="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="javascript:void(0)" onclick="openRegisterModal()" class="nav-register-link" title="Register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <div id="userLinks" style="display: none;">
+                    <span class="user-greeting" id="headerUserName">
+                        <i class="fas fa-user-circle"></i> User
+                    </span>
+                    <a href="account.html" class="nav-login-link" title="My Account" style="background: var(--gold); border-color: var(--gold);">
+                        <i class="fas fa-user"></i> My Account
+                    </a>
+                    <a href="javascript:void(0)" onclick="logoutUser()" class="nav-register-link" title="Logout" style="background: transparent; border-color: #ff4444; color: #ff4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+
+                <div class="hamburger" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="searchBar" style="display: none; width: 100%; padding: 15px 0; border-top: 2px solid var(--gold); margin-top: 10px;">
+                <div style="display: flex; gap: 10px; max-width: 600px; margin: 0 auto; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="searchInput" placeholder="Search wedding templates, plugins, fonts..."
+                           style="flex: 1; min-width: 200px; padding: 14px 25px; border: 2px solid var(--gold); border-radius: 50px; font-size: 16px; outline: none;">
+                    <button onclick="performSearch()"
+                            style="padding: 14px 30px; background: var(--gold); border: none; border-radius: 50px; color: var(--dark); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button onclick="closeSearch()"
+                            style="padding: 14px 20px; background: #ff4444; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="searchResults" style="max-width: 600px; margin: 15px auto 0;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    BREADCRUMB
+    ============================================ -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> / <span>FAQ</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+    FAQ HERO
+    ============================================ -->
+    <section class="faq-hero">
+        <div class="container faq-hero-content">
+            <h1>Frequently Asked <span>Questions</span></h1>
+            <p>Find answers to the most common questions about PixanithingVault, our products, and services.</p>
+        </div>
+    </section>
+
+    <!-- ============================================
+    FAQ MAIN
+    ============================================ -->
+    <section class="faq-main">
+        <div class="container">
+
+            <div class="faq-container">
+
+                <!-- Category Filters -->
+                <div class="faq-categories" id="faqCategories">
+                    <button class="active" data-category="all" onclick="filterFaq('all', this)">All</button>
+                    <button data-category="general" onclick="filterFaq('general', this)">General</button>
+                    <button data-category="account" onclick="filterFaq('account', this)">Account</button>
+                    <button data-category="products" onclick="filterFaq('products', this)">Products</button>
+                    <button data-category="payment" onclick="filterFaq('payment', this)">Payment</button>
+                    <button data-category="technical" onclick="filterFaq('technical', this)">Technical</button>
+                </div>
+
+                <!-- FAQ Accordion -->
+                <div id="faqAccordion">
+
+                    <!-- ===== CATEGORY: GENERAL ===== -->
+                    <div class="faq-accordion-item active" data-category="general">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                What is PixanithingVault?
+                                <span class="faq-category-tag general">General</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            PixanithingVault is a premium digital marketplace that offers wedding design resources including video templates, plugins, typography, and graphics. We help wedding videographers, designers, and creators tell love stories beautifully with high-quality, professionally crafted assets.
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item" data-category="general">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                Who can use your products?
+                                <span class="faq-category-tag general">General</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Our products are designed for wedding videographers, graphic designers, content creators, photographers, and even DIY couples who want to create beautiful wedding content. Our templates and resources cater to both beginners and professionals.
+                        </div>
+                    </div>
+
+                    <!-- ===== CATEGORY: ACCOUNT ===== -->
+                    <div class="faq-accordion-item" data-category="account">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                How do I create an account?
+                                <span class="faq-category-tag account">Account</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            You can create an account by clicking the "Register" link in the top navigation bar. Fill in your name, email, and password, then click "Create Account". You'll receive a confirmation and can start accessing your purchases instantly.
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item" data-category="account">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                How do I reset my password?
+                                <span class="faq-category-tag account">Account</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            To reset your password, click on the "Login" link in the navigation bar, then click "Forgot Password?". Enter your registered email address, and you'll receive a password reset link. If you don't see the email, check your spam folder.
+                        </div>
+                    </div>
+
+                    <!-- ===== CATEGORY: PRODUCTS ===== -->
+                    <div class="faq-accordion-item" data-category="products">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                What formats are available for download?
+                                <span class="faq-category-tag products">Products</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Our products come in various formats:
+                            <ul>
+                                <li><strong>Video Templates:</strong> .aep (After Effects), .prproj (Premiere Pro), .mogrt</li>
+                                <li><strong>Graphics:</strong> .psd, .ai, .cdr, .png</li>
+                                <li><strong>Typography:</strong> .ttf, .otf, .woff</li>
+                                <li><strong>Plugins:</strong> .cube, .look, .luts</li>
+                            </ul>
+                            Each product page specifies the exact formats included.
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item" data-category="products">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                Do I need special software to use these templates?
+                                <span class="faq-category-tag products">Products</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, most templates require specific software. Video templates require Adobe After Effects or Premiere Pro. Graphics require Adobe Photoshop, Illustrator, or CorelDRAW. Typography files can be installed on any operating system. Each product page lists the required software and system requirements.
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item" data-category="products">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                Can I use these products for commercial projects?
+                                <span class="faq-category-tag products">Products</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes! Our <strong>Standard License</strong> allows you to use templates in commercial projects like wedding videos, client presentations, and social media content. For broader usage like reselling or distribution, please check our <a href="terms.html">Terms of Service</a> for detailed licensing information.
+                        </div>
+                    </div>
+
+                    <!-- ===== CATEGORY: PAYMENT ===== -->
+                    <div class="faq-accordion-item" data-category="payment">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                What payment methods do you accept?
+                                <span class="faq-category-tag payment">Payment</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            We accept major credit and debit cards (Visa, MasterCard, American Express), PayPal, and other secure payment gateways. All transactions are encrypted and processed securely.
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item" data-category="payment">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                What is your refund policy?
+                                <span class="faq-category-tag payment">Payment</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Due to the digital nature of our products, all sales are generally final. However, if you encounter technical issues such as corrupted files or compatibility problems, we offer a <strong>7-day replacement guarantee</strong>. Please contact our support team for assistance. Read our full <a href="refund-policy.html">Refund Policy</a> for more details.
+                        </div>
+                    </div>
+
+                    <!-- ===== CATEGORY: TECHNICAL ===== -->
+                    <div class="faq-accordion-item" data-category="technical">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                How do I download my purchased files?
+                                <span class="faq-category-tag technical">Technical</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            After a successful purchase, you'll receive a download link on the confirmation page and via email. You can also access all your purchases from your <a href="account.html">Account Dashboard</a> under the "My Downloads" section. Downloads are available 24/7 and never expire.
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item" data-category="technical">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span class="question-text">
+                                What should I do if a file doesn't work?
+                                <span class="faq-category-tag technical">Technical</span>
+                            </span>
+                            <span class="question-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            If you encounter any issues with your downloaded files, please contact our support team at <a href="mailto:support@pixanithingvault.com">support@pixanithingvault.com</a> with your order ID and a description of the problem. We'll help resolve the issue within 24 hours.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ===== SUPPORT CTA ===== -->
+                <div class="faq-support-cta">
+                    <h3><i class="fas fa-question-circle" style="color: var(--gold);"></i> Still Have Questions?</h3>
+                    <p>If you couldn't find the answer you were looking for, we're here to help. Reach out to our friendly support team.</p>
+                    <div class="btn-group">
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Contact Us
+                        </a>
+                        <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20have%20a%20question!"
+                           target="_blank" class="btn btn-dark">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    WHATSAPP FLOATING BUTTON
+    ============================================ -->
+    <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20need%20help%20with%20a%20question!"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">💬 Need help? Chat with us!</span>
+    </a>
+
+    <!-- ============================================
+    LOGIN / REGISTER MODAL
+    ============================================ -->
+    <div id="userModal">
+        <div>
+            <button class="close-modal" onclick="closeUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-header">
+                <div class="icon">👤</div>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to access your downloads &amp; orders</p>
+            </div>
+
+            <div class="modal-tabs">
+                <button id="loginTab" class="active" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button id="registerTab" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="google-signin-wrapper">
+                    <div id="g_id_onload"
+                         data-client_id="240069241437-8sgrtkm27a673dnkinit3v3fsb4vu00s.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="divider-line">or sign in with email</div>
+
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <div class="form-row">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Don't have an account? <a href="#" onclick="switchTab('register')">Register here</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm">
+                <form onsubmit="handleRegister(event)">
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                    <input type="password" id="registerPassword" placeholder="Password (min 6 chars)" minlength="6" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px;">
+                            <input type="checkbox" required> I agree to the <a href="terms.html" style="color:var(--gold);">Terms &amp; Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit btn-submit-dark">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Already have an account? <a href="#" onclick="switchTab('login')">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script src="js/script.js"></script>
+
+    <!-- FAQ Page Specific JavaScript -->
+    <script>
+        // ============================================
+        // FAQ ACCORDION TOGGLE
+        // ============================================
+
+        function toggleFaq(element) {
+            const item = element.closest('.faq-accordion-item');
+            if (!item) return;
+
+            const isActive = item.classList.contains('active');
+
+            // Close all FAQ items (optional – uncomment for single open)
+            // document.querySelectorAll('.faq-accordion-item').forEach(el => {
+            //     el.classList.remove('active');
+            // });
+
+            if (isActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        }
+
+        // ============================================
+        // FAQ CATEGORY FILTER
+        // ============================================
+
+        function filterFaq(category, button) {
+            document.querySelectorAll('.faq-categories button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+
+            const items = document.querySelectorAll('.faq-accordion-item');
+            items.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                if (category === 'all' || itemCategory === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof fetchCartAndUpdateBadge === 'function') {
+                fetchCartAndUpdateBadge();
+            }
+
+            if (typeof updateHeader === 'function') {
+                updateHeader();
+            }
+
+            const firstItem = document.querySelector('.faq-accordion-item');
+            if (firstItem && !firstItem.classList.contains('active')) {
+                firstItem.classList.add('active');
+            }
+
+            console.log('📄 FAQ page loaded');
+        });
+    </script>
+
+</body>
+</html>

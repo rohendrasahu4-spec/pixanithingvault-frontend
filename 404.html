@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 – Page Not Found | PixanithingVault</title>
+    <meta name="description" content="Oops! The page you're looking for doesn't exist. Let's get you back to creating beautiful wedding memories." />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Font (Optional) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ============================================
+           ROOT VARIABLES
+           ============================================ */
+        :root {
+            --primary: #6B2D5B;
+            --primary-light: #8B4A7A;
+            --primary-dark: #4A1A3D;
+            --gold: #D4A54A;
+            --gold-light: #E8C97A;
+            --gold-dark: #B8923A;
+            --cream: #FFF8F0;
+            --deep-plum: #3D1A34;
+            --dark: #1A1A1A;
+            --gray: #666666;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.2);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--cream);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            font-family: var(--font-body);
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ============================================
+           MINI HEADER
+           ============================================ */
+        .mini-header {
+            padding: 20px 0;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .mini-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -1px;
+            font-family: var(--font-heading);
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-links a {
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .header-links a:hover {
+            color: var(--gold);
+        }
+
+        .header-links .home-link {
+            background: var(--gold);
+            color: var(--dark);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .header-links .home-link:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           MAIN 404 CONTENT
+           ============================================ */
+        .error-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px 80px;
+            min-height: 70vh;
+        }
+
+        .error-content {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Illustration */
+        .error-illustration {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .error-illustration .envelope-icon {
+            font-size: 120px;
+            color: var(--gold);
+            opacity: 0.6;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-illustration .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20%;
+            font-size: 40px;
+            color: var(--primary);
+            opacity: 0.3;
+            transform: rotate(15deg);
+        }
+
+        .error-illustration .heart {
+            position: absolute;
+            bottom: 10px;
+            left: 25%;
+            font-size: 30px;
+            color: #ff6b81;
+            opacity: 0.4;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Error Number */
+        .error-number {
+            font-size: 120px;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: var(--font-heading);
+            line-height: 1;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: var(--font-heading);
+            margin-bottom: 15px;
+        }
+
+        .error-title span {
+            color: var(--gold);
+        }
+
+        .error-message {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 500px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        /* Search Box */
+        .error-search {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .error-search input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 22px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+            background: var(--white);
+            font-family: var(--font-body);
+        }
+
+        .error-search input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 165, 74, 0.15);
+        }
+
+        .error-search button {
+            padding: 14px 30px;
+            background: var(--gold);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-body);
+        }
+
+        .error-search button:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .error-search button i {
+            margin-right: 6px;
+        }
+
+        /* Button Group */
+        .error-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .error-buttons .btn {
+            min-width: 180px;
+        }
+
+        /* ============================================
+           MINI FOOTER
+           ============================================ */
+        .mini-footer {
+            background: var(--deep-plum);
+            color: var(--white);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .mini-footer p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .mini-footer .footer-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .mini-footer .footer-links a {
+            font-size: 14px;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .mini-footer .footer-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .error-number {
+                font-size: 80px;
+            }
+
+            .error-title {
+                font-size: 26px;
+            }
+
+            .error-message {
+                font-size: 16px;
+            }
+
+            .error-illustration .envelope-icon {
+                font-size: 80px;
+            }
+
+            .error-illustration .stamp {
+                font-size: 28px;
+                right: 10%;
+            }
+
+            .error-illustration .heart {
+                font-size: 22px;
+                left: 15%;
+            }
+
+            .error-search {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .error-search input {
+                width: 100%;
+                text-align: center;
+            }
+
+            .error-search button {
+                width: 100%;
+            }
+
+            .error-buttons .btn {
+                min-width: 140px;
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+
+            .mini-header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .header-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-links .home-link {
+                padding: 6px 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-number {
+                font-size: 60px;
+            }
+
+            .error-title {
+                font-size: 22px;
+            }
+
+            .error-message {
+                font-size: 15px;
+            }
+
+            .error-illustration .envelope-icon {
+                font-size: 60px;
+            }
+
+            .error-illustration .stamp {
+                font-size: 20px;
+                top: 10px;
+                right: 5%;
+            }
+
+            .error-illustration .heart {
+                font-size: 18px;
+                bottom: 5px;
+                left: 10%;
+            }
+
+            .error-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .error-buttons .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .mini-footer .footer-links {
+                gap: 12px;
+            }
+
+            .mini-footer .footer-links a {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    MINI HEADER
+    ============================================ -->
+    <header class="mini-header">
+        <div class="container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+            <div class="header-links">
+                <a href="index.html" class="home-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    ERROR CONTENT
+    ============================================ -->
+    <main class="error-main">
+        <div class="container error-content">
+
+            <!-- Illustration -->
+            <div class="error-illustration">
+                <span class="envelope-icon">💌</span>
+                <span class="stamp">✉️</span>
+                <span class="heart">❤️</span>
+            </div>
+
+            <!-- Error Number -->
+            <div class="error-number">404</div>
+
+            <!-- Title -->
+            <h1 class="error-title">
+                Oops! <span>Invitation Lost</span>
+            </h1>
+
+            <!-- Message -->
+            <p class="error-message">
+                Looks like this wedding invitation got lost in the mail. Don't worry — we'll get you back to the celebration!
+            </p>
+
+            <!-- Search -->
+            <form class="error-search" onsubmit="handleSearch(event)">
+                <input type="text" id="errorSearchInput" placeholder="Search for templates, plugins, fonts..." />
+                <button type="submit">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+
+            <!-- Buttons -->
+            <div class="error-buttons">
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="shop.html" class="btn btn-secondary">
+                    <i class="fas fa-shopping-bag"></i> Browse Shop
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ============================================
+    MINI FOOTER
+    ============================================ -->
+    <footer class="mini-footer">
+        <div class="container">
+            <p>&copy; 2026 PixanithingVault. Made with ❤️ for wedding creators.</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script>
+        // ============================================
+        // SEARCH HANDLER
+        // ============================================
+
+        function handleSearch(event) {
+            event.preventDefault();
+            const input = document.getElementById('errorSearchInput');
+            const query = input.value.trim();
+            if (query === '') {
+                alert('⚠️ Please enter a search term!');
+                return;
+            }
+            window.location.href = 'search.html?q=' + encodeURIComponent(query);
+        }
+
+        // ============================================
+        // ENTER KEY SUPPORT FOR SEARCH
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('errorSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSearch(e);
+                    }
+                });
+            }
+
+            console.log('📄 404 Error page loaded');
+        });
+    </script>
+
+</body>
+</html>

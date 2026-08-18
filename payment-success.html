@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Successful – PixanithingVault</title>
+    <meta name="description" content="Thank you for your purchase. Your order is confirmed." />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        .success-container {
+            max-width: 700px;
+            margin: 60px auto;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 50px 40px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            animation: successPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes successPulse {
+            0%,
+            100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .success-container h1 {
+            color: var(--primary);
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .success-container .subtitle {
+            color: var(--gray);
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .order-details-box {
+            text-align: left;
+            background: var(--cream);
+            border-radius: var(--border-radius-sm);
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .order-details-box .order-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .order-details-box .order-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-details-box .order-row .label {
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .order-details-box .order-row .value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .download-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            border: 2px dashed var(--gold);
+        }
+
+        .download-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .download-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--white);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .download-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+
+        .download-item .product-name {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .download-item .btn-download {
+            padding: 6px 18px;
+            background: var(--gold);
+            color: var(--dark);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-item .btn-download:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn-group .btn {
+            min-width: 180px;
+        }
+
+        .loading-state {
+            padding: 40px;
+        }
+        .loading-state i {
+            font-size: 40px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 30px 20px;
+                margin: 30px 15px;
+            }
+            .success-container h1 {
+                font-size: 26px;
+            }
+            .order-details-box {
+                padding: 15px;
+            }
+            .download-item {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-group .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .success-container {
+                padding: 20px 15px;
+                margin: 20px 10px;
+            }
+            .success-icon {
+                font-size: 60px;
+            }
+            .success-container h1 {
+                font-size: 22px;
+            }
+            .order-details-box .order-row {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 6px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    MINI HEADER
+    ============================================ -->
+    <header style="padding: 12px 0;">
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+            <nav id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="hamburger" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    SUCCESS CONTENT
+    ============================================ -->
+    <div class="container">
+        <div class="success-container" id="successContainer">
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading your order details...</p>
+            </div>
+
+            <!-- Success Content (Hidden initially) -->
+            <div id="successContent" style="display: none;">
+
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <h1>Payment Successful! 🎉</h1>
+                <p class="subtitle">Thank you for your purchase. Your order is confirmed.</p>
+
+                <!-- Order Details -->
+                <div class="order-details-box">
+                    <div class="order-row">
+                        <span class="label">Order ID</span>
+                        <span class="value" id="orderId">-</span>
+                    </div>
+                    <div class="order-row">
+                        <span class="label">Order Date</span>
+                        <span class="value" id="orderDate">-</span>
+                    </div>
+                    <div class="order-row">
+                        <span class="label">Total Amount</span>
+                        <span class="value" id="orderTotal">-</span>
+                    </div>
+                    <div class="order-row">
+                        <span class="label">Payment Method</span>
+                        <span class="value" id="paymentMethod">Razorpay</span>
+                    </div>
+                    <div class="order-row" style="border-bottom: none;">
+                        <span class="label">Status</span>
+                        <span class="value" style="color: #4CAF50;" id="orderStatus">✅ Completed</span>
+                    </div>
+                </div>
+
+                <!-- Product List -->
+                <div style="text-align:left; margin: 15px 0;">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">Products Purchased</h4>
+                    <div id="productList"></div>
+                </div>
+
+                <!-- Download Section -->
+                <div class="download-section" id="downloadSection">
+                    <h3><i class="fas fa-download" style="color: var(--gold);"></i> Your Downloads</h3>
+                    <div id="downloadLinks">
+                        <p style="color: var(--gray);">Your download links will appear here shortly.</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <a href="account.html" class="btn btn-primary">
+                        <i class="fas fa-user"></i> Go to My Account
+                    </a>
+                    <a href="shop.html" class="btn btn-dark">
+                        <i class="fas fa-shopping-bag"></i> Continue Shopping
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer style="margin-top: 20px;">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script>
+        // ============================================
+        // GET ORDER ID FROM URL
+        // ============================================
+
+        function getOrderIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('orderId');
+        }
+
+        // ============================================
+        // FETCH ORDER DETAILS FROM BACKEND
+        // ============================================
+
+        async function fetchOrderDetails(orderId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // User not logged in, show error
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('successContent').style.display = 'block';
+                document.getElementById('successContent').innerHTML = `
+                    <div class="success-icon"><i class="fas fa-exclamation-triangle" style="color:#ff4444;"></i></div>
+                    <h1 style="color:#ff4444;">Session Expired</h1>
+                    <p class="subtitle">Please login to view your order details.</p>
+                    <div class="btn-group" style="margin-top:20px;">
+                        <a href="index.html" class="btn btn-primary">Go to Home</a>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('currentUser');
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    throw new Error('Failed to fetch order');
+                }
+
+                const order = await response.json();
+                displayOrder(order);
+
+            } catch (error) {
+                console.error('Error fetching order:', error);
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('successContent').style.display = 'block';
+                document.getElementById('successContent').innerHTML = `
+                    <div class="success-icon"><i class="fas fa-exclamation-triangle" style="color:#ff4444;"></i></div>
+                    <h1 style="color:#ff4444;">Order Not Found</h1>
+                    <p class="subtitle">We couldn't find your order details. Please contact support.</p>
+                    <div class="btn-group" style="margin-top:20px;">
+                        <a href="index.html" class="btn btn-primary">Go to Home</a>
+                        <a href="contact.html" class="btn btn-dark">Contact Support</a>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // DISPLAY ORDER
+        // ============================================
+
+        function displayOrder(order) {
+            // Hide loading, show content
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successContent').style.display = 'block';
+
+            // Order details
+            document.getElementById('orderId').textContent = order._id.slice(-8).toUpperCase();
+            document.getElementById('orderDate').textContent = new Date(order.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('orderTotal').textContent = '$' + order.total.toFixed(2);
+            document.getElementById('paymentMethod').textContent = order.paymentMethod === 'razorpay' ? 'Razorpay' : 'Razorpay';
+
+            // Product List
+            let productHtml = '';
+            order.items.forEach(item => {
+                const product = item.productId || {};
+                productHtml += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--light-gray);">
+                        <span style="font-weight:500; color:var(--primary);">${product.name || 'Product'}</span>
+                        <span style="color:var(--gray);">x${item.quantity} — $${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('productList').innerHTML = productHtml;
+
+            // Download Links
+            const downloadContainer = document.getElementById('downloadLinks');
+            if (order.downloadLinks && order.downloadLinks.length > 0) {
+                let downloadHtml = '';
+                order.downloadLinks.forEach(link => {
+                    downloadHtml += `
+                        <div class="download-item">
+                            <span class="product-name">
+                                <i class="fas fa-file-archive" style="color:var(--gold);"></i>
+                                ${link.productId ? link.productId.name : 'Product'}
+                            </span>
+                            <a href="${API_BASE_URL}/download/${link.token}" class="btn-download" target="_blank">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    `;
+                });
+                downloadContainer.innerHTML = downloadHtml;
+            } else {
+                downloadContainer.innerHTML = `
+                    <p style="color: var(--gray);">Your download links will be available soon. Please check your account dashboard.</p>
+                `;
+            }
+        }
+
+        // ============================================
+        // HANDLE NO ORDER ID
+        // ============================================
+
+        function showNoOrderError() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successContent').style.display = 'block';
+            document.getElementById('successContent').innerHTML = `
+                <div class="success-icon"><i class="fas fa-exclamation-triangle" style="color:#ff4444;"></i></div>
+                <h1 style="color:#ff4444;">Invalid Session</h1>
+                <p class="subtitle">We couldn't find your order details. Please check your email for order confirmation.</p>
+                <div class="btn-group" style="margin-top:20px;">
+                    <a href="index.html" class="btn btn-primary">Go to Home</a>
+                    <a href="account.html" class="btn btn-dark">My Account</a>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderId = getOrderIdFromURL();
+
+            if (orderId) {
+                fetchOrderDetails(orderId);
+            } else {
+                showNoOrderError();
+            }
+
+            // Update header state
+            if (typeof updateHeader === 'function') updateHeader();
+
+            console.log('📄 Payment Success page loaded');
+        });
+
+        // ============================================
+        // MAKE API_BASE_URL AVAILABLE GLOBALLY
+        // ============================================
+
+        const API_BASE_URL = window.API_BASE_URL || 'http://localhost:5000/api';
+    </script>
+
+</body>
+</html>

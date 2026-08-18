@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixanithingVault – Premium Wedding Templates</title>
+    <meta name="description" content="Premium wedding video templates, plugins, typography & graphics for your perfect day." />
+
+    <!-- Google Fonts (Inter for login form) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Additional Styles -->
+    <style>
+        /* ============================================
+           FLOATING WHATSAPP BUTTON
+           ============================================ */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: #25D366;
+            border-radius: 50%;
+            box-shadow: 0 4px 25px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: whatsappPulse 2s infinite;
+            cursor: pointer;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 40px rgba(37, 211, 102, 0.6);
+            background: #1ebe5c;
+        }
+
+        .whatsapp-float i {
+            font-size: 38px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover i {
+            transform: rotate(-10deg);
+        }
+
+        @keyframes whatsappPulse {
+            0% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 4px 40px rgba(37, 211, 102, 0.7), 0 0 0 10px rgba(37, 211, 102, 0.1); }
+            100% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.4); }
+        }
+
+        .whatsapp-float::before,
+        .whatsapp-float::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(37, 211, 102, 0.3);
+            animation: whatsappRipple 2.5s infinite;
+        }
+
+        .whatsapp-float::before {
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+        }
+
+        .whatsapp-float::after {
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            animation-delay: 0.5s;
+            border-color: rgba(37, 211, 102, 0.15);
+        }
+
+        @keyframes whatsappRipple {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 85px;
+            background: var(--white);
+            color: var(--dark);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            border: 1px solid var(--light-gray);
+        }
+
+        .whatsapp-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid var(--white);
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .whatsapp-float i {
+                font-size: 32px;
+            }
+            .whatsapp-tooltip {
+                display: none;
+            }
+            .whatsapp-float::before,
+            .whatsapp-float::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .whatsapp-float {
+                width: 55px;
+                height: 55px;
+                bottom: 15px;
+                right: 15px;
+            }
+            .whatsapp-float i {
+                font-size: 28px;
+            }
+        }
+
+        /* ============================================
+           HEADER USER GREETING
+           ============================================ */
+        #userLinks {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #userLinks .user-greeting {
+            font-weight: 500;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        #userLinks .user-greeting i {
+            font-size: 18px;
+            color: var(--gold);
+        }
+
+        #authLinks {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            #userLinks .user-greeting {
+                display: none;
+            }
+            #authLinks .nav-login-link,
+            #authLinks .nav-register-link,
+            #userLinks .nav-login-link,
+            #userLinks .nav-register-link {
+                padding: 6px 8px;
+                font-size: 0;
+                background: transparent !important;
+                border: none !important;
+            }
+            #userLinks .nav-register-link {
+                color: #ff4444 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    HEADER
+    ============================================ -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+
+            <nav id="mainNav">
+                <a href="index.html" class="active">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="cart.html" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="javascript:void(0)" onclick="toggleSearch()" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <!-- ===== LOGIN / REGISTER (Redirect to login.html) ===== -->
+                <div id="authLinks">
+                    <a href="login.html" class="nav-login-link" title="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="login.html?register=true" class="nav-register-link" title="Register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <!-- ===== USER INFO (Shown when logged in) ===== -->
+                <div id="userLinks" style="display: none;">
+                    <span class="user-greeting" id="headerUserName">
+                        <i class="fas fa-user-circle"></i> User
+                    </span>
+                    <a href="account.html" class="nav-login-link" title="My Account" style="background: var(--gold); border-color: var(--gold);">
+                        <i class="fas fa-user"></i> My Account
+                    </a>
+                    <a href="javascript:void(0)" onclick="logoutUser()" class="nav-register-link" title="Logout" style="background: transparent; border-color: #ff4444; color: #ff4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+
+                <div class="hamburger" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="searchBar" style="display: none; width: 100%; padding: 15px 0; border-top: 2px solid var(--gold); margin-top: 10px;">
+                <div style="display: flex; gap: 10px; max-width: 600px; margin: 0 auto; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="searchInput" placeholder="Search wedding templates, plugins, fonts..."
+                           style="flex: 1; min-width: 200px; padding: 14px 25px; border: 2px solid var(--gold); border-radius: 50px; font-size: 16px; outline: none;">
+                    <button onclick="performSearch()"
+                            style="padding: 14px 30px; background: var(--gold); border: none; border-radius: 50px; color: var(--dark); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button onclick="closeSearch()"
+                            style="padding: 14px 20px; background: #ff4444; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="searchResults" style="max-width: 600px; margin: 15px auto 0;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    HERO
+    ============================================ -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Create <span>Timeless</span> Wedding Memories</h1>
+            <p>Premium wedding video templates, plugins, typography &amp; graphics for your perfect day</p>
+            <div class="hero-buttons">
+                <a href="shop.html" class="btn btn-primary">Explore Collection</a>
+                <a href="about.html" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+    STICKY SECTIONS WRAPPER
+    ============================================ -->
+    <div class="sticky-wrapper">
+
+        <!-- Section 1: Shop by Category (3D Flip Carousel) -->
+        <section class="sticky-section category-section">
+            <div class="sticky-content">
+                <h2 class="section-title">Shop by <span>Category</span></h2>
+                <div class="carousel-wrapper" id="categoryCarousel">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Card 1 -->
+                        <div class="carousel-card" data-index="0">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">🎬</div>
+                                    <h3 class="card-title">Video Templates</h3>
+                                    <p class="card-sub">Premiere Pro &amp; AE</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>✨ Video Templates</h4>
+                                    <p>Cinematic wedding templates with elegant transitions.</p>
+                                    <span class="card-tag">12 templates</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="carousel-card" data-index="1">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">⚡</div>
+                                    <h3 class="card-title">Plugins</h3>
+                                    <p class="card-sub">LUTs, Presets &amp; Effects</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>⚡ Plugins</h4>
+                                    <p>Professional color grading LUTs and presets.</p>
+                                    <span class="card-tag">8 plugins</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="carousel-card" data-index="2">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">✒️</div>
+                                    <h3 class="card-title">Typography</h3>
+                                    <p class="card-sub">Fonts &amp; Calligraphy</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>✒️ Typography</h4>
+                                    <p>Elegant wedding fonts and calligraphy sets.</p>
+                                    <span class="card-tag">15 fonts</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="carousel-card" data-index="3">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">🎨</div>
+                                    <h3 class="card-title">Graphics</h3>
+                                    <p class="card-sub">Invitations &amp; Banners</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>🎨 Graphics</h4>
+                                    <p>Print-ready invitation cards and banners.</p>
+                                    <span class="card-tag">24 designs</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 5 -->
+                        <div class="carousel-card" data-index="4">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">📷</div>
+                                    <h3 class="card-title">Photo Overlays</h3>
+                                    <p class="card-sub">Light Leaks &amp; Textures</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>📷 Overlays</h4>
+                                    <p>Vintage light leaks and bokeh textures.</p>
+                                    <span class="card-tag">30 overlays</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 6 -->
+                        <div class="carousel-card" data-index="5">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">💍</div>
+                                    <h3 class="card-title">Bridal Kits</h3>
+                                    <p class="card-sub">Complete Wedding Suites</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>💍 Bridal Kits</h4>
+                                    <p>All-in-one wedding design kits.</p>
+                                    <span class="card-tag">6 kits</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Duplicate cards for infinite loop -->
+                        <div class="carousel-card" data-index="0-clone">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">🎬</div>
+                                    <h3 class="card-title">Video Templates</h3>
+                                    <p class="card-sub">Premiere Pro &amp; AE</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>✨ Video Templates</h4>
+                                    <p>Cinematic wedding templates with elegant transitions.</p>
+                                    <span class="card-tag">12 templates</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="1-clone">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">⚡</div>
+                                    <h3 class="card-title">Plugins</h3>
+                                    <p class="card-sub">LUTs, Presets &amp; Effects</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>⚡ Plugins</h4>
+                                    <p>Professional color grading LUTs and presets.</p>
+                                    <span class="card-tag">8 plugins</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="2-clone">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">✒️</div>
+                                    <h3 class="card-title">Typography</h3>
+                                    <p class="card-sub">Fonts &amp; Calligraphy</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>✒️ Typography</h4>
+                                    <p>Elegant wedding fonts and calligraphy sets.</p>
+                                    <span class="card-tag">15 fonts</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="3-clone">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">🎨</div>
+                                    <h3 class="card-title">Graphics</h3>
+                                    <p class="card-sub">Invitations &amp; Banners</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>🎨 Graphics</h4>
+                                    <p>Print-ready invitation cards and banners.</p>
+                                    <span class="card-tag">24 designs</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="4-clone">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">📷</div>
+                                    <h3 class="card-title">Photo Overlays</h3>
+                                    <p class="card-sub">Light Leaks &amp; Textures</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>📷 Overlays</h4>
+                                    <p>Vintage light leaks and bokeh textures.</p>
+                                    <span class="card-tag">30 overlays</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="5-clone">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-icon">💍</div>
+                                    <h3 class="card-title">Bridal Kits</h3>
+                                    <p class="card-sub">Complete Wedding Suites</p>
+                                </div>
+                                <div class="card-back">
+                                    <h4>💍 Bridal Kits</h4>
+                                    <p>All-in-one wedding design kits.</p>
+                                    <span class="card-tag">6 kits</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Best Sellers -->
+        <section class="sticky-section bestsellers-section">
+            <div class="sticky-content">
+                <h2 class="section-title">Best <span>Sellers</span></h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x240/6B2D5B/FFFFFF?text=Golden+Wedding" alt="Golden Elegance" />
+                            <span class="product-badge">Best Seller</span>
+                        </div>
+                        <div class="product-info">
+                            <h4>Golden Elegance Wedding Template</h4>
+                            <div class="rating">⭐⭐⭐⭐⭐ (124)</div>
+                            <div class="meta">
+                                <span class="price">$49.00</span>
+                                <a href="product-detail.html" class="btn-add">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x240/8B4A7A/FFFFFF?text=Rustic+Love" alt="Rustic Love" />
+                            <span class="product-badge new">New</span>
+                        </div>
+                        <div class="product-info">
+                            <h4>Rustic Love Invitation Pack</h4>
+                            <div class="rating">⭐⭐⭐⭐⭐ (98)</div>
+                            <div class="meta">
+                                <span class="price">$39.00</span>
+                                <a href="product-detail.html" class="btn-add">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x240/D4A54A/FFFFFF?text=Boho+Chic" alt="Boho Chic" />
+                            <span class="product-badge sale">Sale</span>
+                        </div>
+                        <div class="product-info">
+                            <h4>Boho Chic Wedding Collection</h4>
+                            <div class="rating">⭐⭐⭐⭐⭐ (76)</div>
+                            <div class="meta">
+                                <span class="price">$59.00 <span class="old-price">$79.00</span></span>
+                                <a href="product-detail.html" class="btn-add">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x240/3D1A34/FFFFFF?text=Royal+Heritage" alt="Royal Heritage" />
+                        </div>
+                        <div class="product-info">
+                            <h4>Royal Heritage Wedding Template</h4>
+                            <div class="rating">⭐⭐⭐⭐⭐ (52)</div>
+                            <div class="meta">
+                                <span class="price">$69.00</span>
+                                <a href="product-detail.html" class="btn-add">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:30px;">
+                    <a href="shop.html" class="btn btn-primary">View All Products</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Monsoon Bundle -->
+        <section class="sticky-section promo-section">
+            <div class="sticky-content">
+                <h2 style="color: var(--deep-plum); font-size: 36px;">🎉 Monsoon Wedding Bundle</h2>
+                <p style="color: var(--deep-plum); font-size: 20px; margin: 15px 0 25px;">
+                    Get <strong>3 premium templates</strong> at <strong>40% off</strong>. Limited time offer!
+                </p>
+                <a href="shop.html" class="btn btn-primary" style="background: var(--deep-plum); color: var(--white); border: 2px solid var(--gold);">
+                    <i class="fas fa-gift"></i> Grab the Deal
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 4: Why Choose Us -->
+        <section class="sticky-section whyus-section">
+            <div class="sticky-content">
+                <h2 class="section-title">Why <span>Choose Us</span></h2>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:30px;">
+                    <div style="text-align:center; padding:20px;">
+                        <i class="fas fa-gem" style="font-size:48px; color:var(--gold);"></i>
+                        <h3 style="margin:15px 0; color:var(--primary);">Premium Quality</h3>
+                        <p style="color:var(--gray);">High-resolution, professionally designed templates.</p>
+                    </div>
+                    <div style="text-align:center; padding:20px;">
+                        <i class="fas fa-download" style="font-size:48px; color:var(--gold);"></i>
+                        <h3 style="margin:15px 0; color:var(--primary);">Instant Download</h3>
+                        <p style="color:var(--gray);">Access files immediately after purchase.</p>
+                    </div>
+                    <div style="text-align:center; padding:20px;">
+                        <i class="fas fa-hand-holding-heart" style="font-size:48px; color:var(--gold);"></i>
+                        <h3 style="margin:15px 0; color:var(--primary);">Royalty Free</h3>
+                        <p style="color:var(--gray);">Use in commercial projects without restrictions.</p>
+                    </div>
+                    <div style="text-align:center; padding:20px;">
+                        <i class="fas fa-headset" style="font-size:48px; color:var(--gold);"></i>
+                        <h3 style="margin:15px 0; color:var(--primary);">Premium Support</h3>
+                        <p style="color:var(--gray);">Dedicated support team 24/7.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /.sticky-wrapper -->
+
+    <!-- ============================================
+    NEWSLETTER
+    ============================================ -->
+    <section class="newsletter-section">
+        <div class="container" style="text-align:center; max-width:600px; margin:0 auto;">
+            <h2 style="font-size:32px; margin-bottom:15px;">Subscribe to <span style="color:var(--gold);">Newsletter</span></h2>
+            <p style="margin-bottom:25px; opacity:0.9;">Get latest updates, new templates &amp; special offers directly in your inbox.</p>
+            <form style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                <input type="email" placeholder="Enter your email address" required
+                       style="flex:1; min-width:200px; padding:14px 20px; border:none; border-radius:50px; font-size:16px; outline:none;">
+                <button type="submit" class="btn btn-primary" style="background:var(--gold); color:var(--dark);">
+                    <i class="fas fa-paper-plane"></i> Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    WHATSAPP FLOATING BUTTON
+    ============================================ -->
+    <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20need%20help%20with%20wedding%20templates!"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">💬 Chat with us!</span>
+    </a>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script src="js/script.js"></script>
+
+</body>
+</html>

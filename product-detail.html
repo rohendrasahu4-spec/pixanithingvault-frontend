@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Detail – PixanithingVault</title>
+    <meta name="description" content="View details of our premium wedding design templates and products." />
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Product Detail Page Specific Styles -->
+    <style>
+        .product-detail-main {
+            padding: 40px 0 60px;
+            background: var(--cream);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .loading-state i {
+            font-size: 48px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        .loading-state p {
+            color: var(--gray);
+        }
+
+        @media (max-width: 992px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+                padding: 25px;
+                gap: 30px;
+            }
+            .product-gallery .main-image {
+                height: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-detail-grid {
+                padding: 18px;
+                gap: 20px;
+            }
+            .product-gallery .main-image {
+                height: 250px;
+            }
+            .product-gallery .thumbnail-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .product-info-detail h1 {
+                font-size: 24px;
+            }
+            .product-info-detail .price-row .current-price {
+                font-size: 26px;
+            }
+            .qty-cart-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .qty-cart-row .qty-selector {
+                align-self: flex-start;
+            }
+            .qty-cart-row .btn-cart,
+            .qty-cart-row .btn-buy {
+                width: 100%;
+            }
+            .related-products .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-detail-grid {
+                padding: 12px;
+                border-radius: var(--border-radius-sm);
+            }
+            .product-gallery .main-image {
+                height: 200px;
+            }
+            .product-gallery .thumbnail-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+            }
+            .product-info-detail h1 {
+                font-size: 20px;
+            }
+            .product-info-detail .price-row .current-price {
+                font-size: 22px;
+            }
+            .product-info-detail .price-row .old-price {
+                font-size: 16px;
+            }
+            .related-products .related-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    HEADER
+    ============================================ -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+
+            <nav id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="cart.html" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="javascript:void(0)" onclick="toggleSearch()" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <div id="authLinks">
+                    <a href="javascript:void(0)" onclick="openLoginModal()" class="nav-login-link" title="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="javascript:void(0)" onclick="openRegisterModal()" class="nav-register-link" title="Register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <div id="userLinks" style="display: none;">
+                    <span class="user-greeting" id="headerUserName">
+                        <i class="fas fa-user-circle"></i> User
+                    </span>
+                    <a href="account.html" class="nav-login-link" title="My Account" style="background: var(--gold); border-color: var(--gold);">
+                        <i class="fas fa-user"></i> My Account
+                    </a>
+                    <a href="javascript:void(0)" onclick="logoutUser()" class="nav-register-link" title="Logout" style="background: transparent; border-color: #ff4444; color: #ff4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+
+                <div class="hamburger" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="searchBar" style="display: none; width: 100%; padding: 15px 0; border-top: 2px solid var(--gold); margin-top: 10px;">
+                <div style="display: flex; gap: 10px; max-width: 600px; margin: 0 auto; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="searchInput" placeholder="Search wedding templates, plugins, fonts..."
+                           style="flex: 1; min-width: 200px; padding: 14px 25px; border: 2px solid var(--gold); border-radius: 50px; font-size: 16px; outline: none;">
+                    <button onclick="performSearch()"
+                            style="padding: 14px 30px; background: var(--gold); border: none; border-radius: 50px; color: var(--dark); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button onclick="closeSearch()"
+                            style="padding: 14px 20px; background: #ff4444; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="searchResults" style="max-width: 600px; margin: 15px auto 0;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    BREADCRUMB
+    ============================================ -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> /
+            <a href="shop.html">Shop</a> /
+            <span id="breadcrumbProduct">Loading...</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+    PRODUCT DETAIL MAIN
+    ============================================ -->
+    <section class="product-detail-main">
+        <div class="container">
+
+            <div id="productDetailContainer">
+                <!-- Loading State -->
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading product details...</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================
+    RELATED PRODUCTS
+    ============================================ -->
+    <section class="related-products" id="relatedProductsSection" style="display:none;">
+        <div class="container">
+            <h2 class="section-title">You May Also <span>Like</span></h2>
+            <div class="related-grid" id="relatedProductsGrid">
+                <!-- Related products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    WHATSAPP FLOATING BUTTON
+    ============================================ -->
+    <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20have%20a%20question%20about%20a%20product!"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">💬 Question about this product?</span>
+    </a>
+
+    <!-- ============================================
+    LOGIN / REGISTER MODAL
+    ============================================ -->
+    <div id="userModal">
+        <div>
+            <button class="close-modal" onclick="closeUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-header">
+                <div class="icon">👤</div>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to access your downloads &amp; orders</p>
+            </div>
+
+            <div class="modal-tabs">
+                <button id="loginTab" class="active" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button id="registerTab" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="google-signin-wrapper">
+                    <div id="g_id_onload"
+                         data-client_id="240069241437-8sgrtkm27a673dnkinit3v3fsb4vu00s.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="divider-line">or sign in with email</div>
+
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <div class="form-row">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Don't have an account? <a href="#" onclick="switchTab('register')">Register here</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm">
+                <form onsubmit="handleRegister(event)">
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                    <input type="password" id="registerPassword" placeholder="Password (min 6 chars)" minlength="6" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px;">
+                            <input type="checkbox" required> I agree to the <a href="terms.html" style="color:var(--gold);">Terms &amp; Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit btn-submit-dark">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Already have an account? <a href="#" onclick="switchTab('login')">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script src="js/script.js"></script>
+
+    <!-- Product Detail Specific JavaScript -->
+    <script>
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+
+        let currentProduct = null;
+        let currentQty = 1;
+        const defaultImage = 'https://via.placeholder.com/600x420/lightgray/666?text=No+Image';
+
+        // ============================================
+        // GET PRODUCT ID FROM URL
+        // ============================================
+
+        function getProductIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // ============================================
+        // FETCH PRODUCT DETAILS FROM BACKEND
+        // ============================================
+
+        async function fetchProductDetails(productId) {
+            const container = document.getElementById('productDetailContainer');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/products/${productId}`);
+                if (!response.ok) {
+                    throw new Error('Product not found');
+                }
+                const product = await response.json();
+                currentProduct = product;
+                renderProduct(product);
+                // Fetch related products
+                fetchRelatedProducts(product.category);
+            } catch (error) {
+                console.error('Error fetching product:', error);
+                container.innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;background:var(--white);border-radius:var(--border-radius);box-shadow:var(--shadow);">
+                        <i class="fas fa-exclamation-triangle" style="font-size:48px;color:#ff4444;opacity:0.5;"></i>
+                        <h3 style="color:var(--primary);margin-top:15px;">Product Not Found</h3>
+                        <p style="color:var(--gray);">The product you're looking for doesn't exist.</p>
+                        <a href="shop.html" class="btn btn-primary" style="margin-top:20px;">Back to Shop</a>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // RENDER PRODUCT
+        // ============================================
+
+        function renderProduct(product) {
+            const container = document.getElementById('productDetailContainer');
+
+            // Update breadcrumb
+            document.getElementById('breadcrumbProduct').textContent = product.name;
+
+            const stars = '★'.repeat(Math.round(product.rating || 0)) + '☆'.repeat(5 - Math.round(product.rating || 0));
+            const oldPriceHTML = product.oldPrice && product.oldPrice > product.price ?
+                `
+                <span class="old-price">$${product.oldPrice.toFixed(2)}</span>
+                <span class="save-badge">Save $${(product.oldPrice - product.price).toFixed(2)}</span>
+            ` : '';
+
+            const badges = [];
+            if (product.badge) {
+                badges.push(`<span class="badge-item ${product.badge === 'Best Seller' ? 'bestseller' : product.badge.toLowerCase()}">${product.badge}</span>`);
+            }
+            if (product.inStock !== false) {
+                badges.push('<span class="badge-item stock">✓ In Stock</span>');
+            } else {
+                badges.push('<span class="badge-item" style="background:#f8d7da;color:#721c24;">Out of Stock</span>');
+            }
+
+            const featuresHTML = product.features && product.features.length > 0 ?
+                product.features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('') :
+                '<li><i class="fas fa-check-circle"></i> No features listed.</li>';
+
+            // Generate thumbnails
+            const images = product.images || [product.image || defaultImage];
+            const thumbnails = images.slice(0, 4);
+            const thumbnailsHTML = thumbnails.map((img, idx) =>
+                `<div class="thumb ${idx === 0 ? 'active' : ''}" onclick="changeImage(this, '${img}')">
+                    <img src="${img}" alt="Thumbnail ${idx+1}" />
+                </div>`
+            ).join('');
+
+            container.innerHTML = `
+                <div class="product-detail-grid">
+
+                    <!-- ===== GALLERY ===== -->
+                    <div class="product-gallery">
+                        <div class="main-image" id="mainImage">
+                            <img id="mainImageSrc" src="${images[0] || defaultImage}" alt="${product.name}" />
+                            <div class="play-overlay">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                        </div>
+                        <div class="thumbnail-grid" id="thumbnailGrid">
+                            ${thumbnailsHTML}
+                        </div>
+                    </div>
+
+                    <!-- ===== PRODUCT INFO ===== -->
+                    <div class="product-info-detail">
+
+                        <!-- Badges -->
+                        <div class="product-badge-row">
+                            ${badges.join('')}
+                        </div>
+
+                        <!-- Title -->
+                        <h1>${product.name}</h1>
+
+                        <!-- Rating -->
+                        <div class="rating-row">
+                            <span class="stars">${stars}</span>
+                            <span class="review-count">${product.reviews || 0} Reviews</span>
+                            <span style="color: var(--gray); font-size: 14px;">|</span>
+                            <span style="color: var(--gray); font-size: 14px;">${Math.floor(Math.random() * 500) + 100}+ Downloads</span>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="price-row">
+                            <span class="current-price">$${product.price.toFixed(2)}</span>
+                            ${oldPriceHTML}
+                        </div>
+
+                        <!-- Description -->
+                        <p class="description">${product.description || 'No description available.'}</p>
+
+                        <!-- Features -->
+                        <ul class="features-list">
+                            ${featuresHTML}
+                        </ul>
+
+                        <!-- Quantity & Buttons -->
+                        <div class="qty-cart-row">
+                            <div class="qty-selector">
+                                <button onclick="updateQty(-1)">−</button>
+                                <input type="text" id="qtyInput" value="1" readonly />
+                                <button onclick="updateQty(1)">+</button>
+                            </div>
+                            <button class="btn-cart" onclick="addToCartHandler()">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy" onclick="buyNow()">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+
+                        <!-- Product Meta -->
+                        <div class="product-meta">
+                            <span><strong>SKU:</strong> ${product.sku || 'PV-' + product._id.slice(-6).toUpperCase()}</span>
+                            <span><strong>Category:</strong> <a href="shop.html?category=${product.category}">${product.category ? product.category.charAt(0).toUpperCase() + product.category.slice(1) : 'Uncategorized'}</a></span>
+                            <span><strong>Tags:</strong> ${(product.tags || []).length ? product.tags.join(', ') : 'No tags'}</span>
+                            <div class="share-links">
+                                <span style="font-weight: 600; color: var(--dark);">Share:</span>
+                                <a href="#" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" aria-label="Share on Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                                <a href="#" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+            // Update cart badge
+            if (typeof fetchCartAndUpdateBadge === 'function') {
+                fetchCartAndUpdateBadge();
+            }
+        }
+
+        // ============================================
+        // GALLERY FUNCTIONS
+        // ============================================
+
+        function changeImage(element, imageUrl) {
+            document.querySelectorAll('.thumbnail-grid .thumb').forEach(thumb => thumb.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('mainImageSrc').src = imageUrl;
+        }
+
+        // ============================================
+        // QUANTITY CONTROLS
+        // ============================================
+
+        function updateQty(change) {
+            currentQty += change;
+            if (currentQty < 1) currentQty = 1;
+            if (currentQty > 99) currentQty = 99;
+            document.getElementById('qtyInput').value = currentQty;
+        }
+
+        // ============================================
+        // ADD TO CART (Backend API)
+        // ============================================
+
+        async function addToCartHandler() {
+            if (!currentProduct) {
+                alert('Product not loaded.');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login to add items to your cart.');
+                openLoginModal();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/cart`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        productId: currentProduct._id,
+                        quantity: currentQty
+                    })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showNotification('✅ Added to Cart!', currentProduct.name + ' x' + currentQty);
+                    if (typeof fetchCartAndUpdateBadge === 'function') {
+                        fetchCartAndUpdateBadge();
+                    }
+                } else {
+                    alert(data.error || 'Failed to add to cart.');
+                }
+            } catch (error) {
+                alert('Network error. Please make sure the backend is running.');
+            }
+        }
+
+        // ============================================
+        // BUY NOW
+        // ============================================
+
+        function buyNow() {
+            addToCartHandler().then(() => {
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 500);
+            });
+        }
+
+        // ============================================
+        // FETCH RELATED PRODUCTS
+        // ============================================
+
+        async function fetchRelatedProducts(category) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/products?category=${category}&sort=popular&limit=4`);
+                if (response.ok) {
+                    const products = await response.json();
+                    // Remove current product from related list
+                    const filtered = products.filter(p => p._id !== currentProduct._id).slice(0, 4);
+                    if (filtered.length > 0) {
+                        renderRelatedProducts(filtered);
+                        document.getElementById('relatedProductsSection').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching related products:', error);
+            }
+        }
+
+        function renderRelatedProducts(products) {
+            const grid = document.getElementById('relatedProductsGrid');
+            let html = '';
+            products.forEach(product => {
+                const stars = '⭐'.repeat(Math.round(product.rating || 0)) + '☆'.repeat(5 - Math.round(product.rating ||
+                0));
+                html += `
+                    <div class="related-card">
+                        <div class="rel-image">
+                            <img src="${product.image || 'https://via.placeholder.com/300x180/lightgray/666?text=No+Image'}" alt="${product.name}" loading="lazy" />
+                        </div>
+                        <div class="rel-info">
+                            <h4>${product.name}</h4>
+                            <div class="rel-rating">${stars} (${product.reviews || 0})</div>
+                            <div class="rel-price">$${product.price.toFixed(2)}</div>
+                            <a href="product-detail.html?id=${product._id}" class="rel-btn">View Details</a>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const productId = getProductIdFromURL();
+            if (productId) {
+                fetchProductDetails(productId);
+            } else {
+                document.getElementById('productDetailContainer').innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;background:var(--white);border-radius:var(--border-radius);box-shadow:var(--shadow);">
+                        <i class="fas fa-exclamation-triangle" style="font-size:48px;color:#ff4444;opacity:0.5;"></i>
+                        <h3 style="color:var(--primary);margin-top:15px;">No Product Selected</h3>
+                        <p style="color:var(--gray);">Please select a product from the shop.</p>
+                        <a href="shop.html" class="btn btn-primary" style="margin-top:20px;">Browse Products</a>
+                    </div>
+                `;
+                document.getElementById('breadcrumbProduct').textContent = 'Error';
+            }
+
+            // Update header and cart badge
+            if (typeof updateHeader === 'function') updateHeader();
+            if (typeof fetchCartAndUpdateBadge === 'function') fetchCartAndUpdateBadge();
+
+            console.log('📄 Product Detail page loaded');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop – PixanithingVault</title>
+    <meta name="description" content="Browse our collection of premium wedding video templates, plugins, typography & graphics." />
+
+    <!-- Google Identity Services (Google Sign-In) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Shop Page Specific Styles -->
+    <style>
+        .filter-sidebar {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 100px;
+        }
+        .filter-sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .filter-group {
+            margin-bottom: 25px;
+        }
+        .filter-group h4 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            color: var(--gray);
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-group label:hover {
+            color: var(--primary);
+        }
+        .filter-group input[type="checkbox"],
+        .filter-group input[type="radio"] {
+            accent-color: var(--gold);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .filter-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+        .filter-group .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .filter-actions .btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .filter-actions .btn-clear {
+            background: var(--light-gray);
+            color: var(--gray);
+        }
+        .filter-actions .btn-clear:hover {
+            background: #e0e0e0;
+        }
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        .shop-header .results-count {
+            color: var(--gray);
+            font-size: 15px;
+        }
+        .shop-header .results-count strong {
+            color: var(--primary);
+        }
+        .shop-header .sort-select {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            color: var(--dark);
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+        }
+        .shop-header .sort-select:focus {
+            border-color: var(--gold);
+        }
+        .shop-header .view-toggle {
+            display: flex;
+            gap: 5px;
+        }
+        .shop-header .view-toggle button {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+        .shop-header .view-toggle button.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: #fff8f0;
+        }
+        .shop-header .view-toggle button:hover {
+            border-color: var(--gold);
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .pagination a {
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius-sm);
+            color: var(--gray);
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .pagination a:hover {
+            border-color: var(--gold);
+            color: var(--primary);
+        }
+        .pagination a.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--dark);
+        }
+        .pagination a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .pagination a.disabled:hover {
+            border-color: #e0e0e0;
+            color: var(--gray);
+        }
+        .filter-toggle {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .filter-toggle i {
+            margin-right: 8px;
+        }
+        .close-filter {
+            display: none;
+        }
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .active-filters .tag {
+            background: var(--light-gray);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .active-filters .tag i {
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+        .active-filters .tag i:hover {
+            color: #ff4444;
+        }
+        .no-products {
+            text-align: center;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+        }
+        .no-products i {
+            font-size: 64px;
+            color: var(--gold);
+            opacity: 0.4;
+            margin-bottom: 20px;
+        }
+        .no-products h3 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .no-products p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .filter-toggle {
+                display: block;
+            }
+            .filter-sidebar {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 999;
+                border-radius: 0;
+                overflow-y: auto;
+                padding: 30px 25px;
+            }
+            .filter-sidebar.open {
+                display: block;
+            }
+            .filter-sidebar .close-filter {
+                display: block;
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                font-size: 28px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: var(--gray);
+            }
+            .shop-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .shop-header .sort-select {
+                width: 100%;
+            }
+            .shop-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================
+    HEADER
+    ============================================ -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" title="Go to Homepage">
+                Pixanith<span>Vault</span>
+            </a>
+
+            <nav id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="shop.html" class="active">Shop</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="cart.html" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="javascript:void(0)" onclick="toggleSearch()" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <!-- Login / Register Links -->
+                <div id="authLinks">
+                    <a href="javascript:void(0)" onclick="openLoginModal()" class="nav-login-link" title="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="javascript:void(0)" onclick="openRegisterModal()" class="nav-register-link" title="Register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <!-- User Info (Logged In) -->
+                <div id="userLinks" style="display: none;">
+                    <span class="user-greeting" id="headerUserName">
+                        <i class="fas fa-user-circle"></i> User
+                    </span>
+                    <a href="account.html" class="nav-login-link" title="My Account" style="background: var(--gold); border-color: var(--gold);">
+                        <i class="fas fa-user"></i> My Account
+                    </a>
+                    <a href="javascript:void(0)" onclick="logoutUser()" class="nav-register-link" title="Logout" style="background: transparent; border-color: #ff4444; color: #ff4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+
+                <div class="hamburger" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="searchBar" style="display: none; width: 100%; padding: 15px 0; border-top: 2px solid var(--gold); margin-top: 10px;">
+                <div style="display: flex; gap: 10px; max-width: 600px; margin: 0 auto; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="searchInput" placeholder="Search wedding templates, plugins, fonts..."
+                           style="flex: 1; min-width: 200px; padding: 14px 25px; border: 2px solid var(--gold); border-radius: 50px; font-size: 16px; outline: none;">
+                    <button onclick="performSearch()"
+                            style="padding: 14px 30px; background: var(--gold); border: none; border-radius: 50px; color: var(--dark); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button onclick="closeSearch()"
+                            style="padding: 14px 20px; background: #ff4444; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="searchResults" style="max-width: 600px; margin: 15px auto 0;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+    BREADCRUMB
+    ============================================ -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> / <span>Shop</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+    SHOP MAIN
+    ============================================ -->
+    <section style="padding: 40px 0 60px;">
+        <div class="container">
+
+            <!-- Mobile Filter Toggle -->
+            <button class="filter-toggle" onclick="toggleFilter()">
+                <i class="fas fa-filter"></i> Filter Products
+            </button>
+
+            <div style="display: grid; grid-template-columns: 280px 1fr; gap: 40px;" class="shop-grid">
+
+                <!-- ===== FILTER SIDEBAR ===== -->
+                <aside class="filter-sidebar" id="filterSidebar">
+                    <button class="close-filter" onclick="toggleFilter()">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                    <h3><i class="fas fa-filter" style="color: var(--gold);"></i> Filters</h3>
+
+                    <!-- Category -->
+                    <div class="filter-group">
+                        <h4>Category</h4>
+                        <label><input type="checkbox" value="video" onchange="applyFilters()"> Video Templates</label>
+                        <label><input type="checkbox" value="plugin" onchange="applyFilters()"> Plugins</label>
+                        <label><input type="checkbox" value="typography" onchange="applyFilters()"> Typography</label>
+                        <label><input type="checkbox" value="graphic" onchange="applyFilters()"> Graphics</label>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="filter-group">
+                        <h4>Price Range</h4>
+                        <input type="range" min="0" max="200" value="200" id="priceRange" oninput="updatePriceLabel()" />
+                        <div class="range-labels">
+                            <span>$0</span>
+                            <span id="priceLabel">$200</span>
+                        </div>
+                    </div>
+
+                    <!-- Style -->
+                    <div class="filter-group">
+                        <h4>Style</h4>
+                        <label><input type="checkbox" value="modern" onchange="applyFilters()"> Modern</label>
+                        <label><input type="checkbox" value="traditional" onchange="applyFilters()"> Traditional</label>
+                        <label><input type="checkbox" value="floral" onchange="applyFilters()"> Floral</label>
+                        <label><input type="checkbox" value="minimalist" onchange="applyFilters()"> Minimalist</label>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="filter-group">
+                        <h4>Rating</h4>
+                        <label><input type="radio" name="rating" value="all" checked onchange="applyFilters()"> All Ratings</label>
+                        <label><input type="radio" name="rating" value="4" onchange="applyFilters()"> ⭐⭐⭐⭐ &amp; Up</label>
+                        <label><input type="radio" name="rating" value="3" onchange="applyFilters()"> ⭐⭐⭐ &amp; Up</label>
+                    </div>
+
+                    <!-- Filter Actions -->
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" onclick="applyFilters()">
+                            <i class="fas fa-check"></i> Apply
+                        </button>
+                        <button class="btn btn-clear" onclick="clearFilters()">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- ===== PRODUCTS ===== -->
+                <div>
+                    <!-- Shop Header -->
+                    <div class="shop-header">
+                        <div class="results-count">
+                            Showing <strong id="shownCount">0</strong> of <strong id="totalCount">0</strong> products
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+                                <option value="newest">Sort by: Newest</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="popular">Best Selling</option>
+                            </select>
+                            <div class="view-toggle">
+                                <button class="active" onclick="setView('grid')" title="Grid View">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                                <button onclick="setView('list')" title="List View">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Filters -->
+                    <div class="active-filters" id="activeFilters"></div>
+
+                    <!-- Products Grid -->
+                    <div class="product-grid" id="productGrid">
+                        <!-- Products will be dynamically loaded -->
+                        <div style="text-align:center;padding:40px;color:var(--gray);grid-column:1/-1;">
+                            <i class="fas fa-spinner fa-spin" style="font-size:40px;color:var(--gold);"></i>
+                            <p style="margin-top:15px;">Loading products...</p>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination" id="pagination"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>PixanithingVault</h4>
+                    <p style="margin-bottom:15px;">Premium wedding design resources for creators worldwide.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope" style="color:var(--gold); width:25px;"></i> support@pixanithingvault.com</li>
+                        <li><i class="fas fa-phone" style="color:var(--gold); width:25px;"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-clock" style="color:var(--gold); width:25px;"></i> Mon-Fri: 9AM-6PM</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--gold); width:25px;"></i> 123 Creative Avenue, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PixanithingVault. All Rights Reserved. | Made with ❤️ for wedding creators</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+    WHATSAPP FLOATING BUTTON
+    ============================================ -->
+    <a href="https://wa.me/919999999999?text=Hi%20PixanithingVault%2C%20I%20need%20help%20with%20wedding%20templates!"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">💬 Chat with us!</span>
+    </a>
+
+    <!-- ============================================
+    LOGIN / REGISTER MODAL (for other pages)
+    ============================================ -->
+    <div id="userModal">
+        <div>
+            <button class="close-modal" onclick="closeUserModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-header">
+                <div class="icon">👤</div>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to access your downloads &amp; orders</p>
+            </div>
+
+            <div class="modal-tabs">
+                <button id="loginTab" class="active" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button id="registerTab" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="google-signin-wrapper">
+                    <div id="g_id_onload"
+                         data-client_id="240069241437-8sgrtkm27a673dnkinit3v3fsb4vu00s.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="divider-line">or sign in with email</div>
+
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <div class="form-row">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Don't have an account? <a href="#" onclick="switchTab('register')">Register here</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm">
+                <form onsubmit="handleRegister(event)">
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                    <input type="password" id="registerPassword" placeholder="Password (min 6 chars)" minlength="6" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px;">
+                            <input type="checkbox" required> I agree to the <a href="terms.html" style="color:var(--gold);">Terms &amp; Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit btn-submit-dark">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    Already have an account? <a href="#" onclick="switchTab('login')">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script src="js/script.js"></script>
+
+    <!-- Shop Page Specific JavaScript -->
+    <script>
+        // ============================================
+        // SHOP LOGIC
+        // ============================================
+
+        let allProducts = [];
+        let currentView = 'grid';
+        let currentPage = 1;
+        const itemsPerPage = 6;
+
+        // ----- Toggle Filter Sidebar (Mobile) -----
+        function toggleFilter() {
+            const sidebar = document.getElementById('filterSidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // ----- Update Price Label -----
+        function updatePriceLabel() {
+            const range = document.getElementById('priceRange');
+            const label = document.getElementById('priceLabel');
+            label.textContent = '$' + range.value;
+        }
+
+        // ----- Get Filters -----
+        function getFilters() {
+            const categories = [];
+            document.querySelectorAll('.filter-group:first-child input[type="checkbox"]:checked').forEach(cb => {
+                categories.push(cb.value);
+            });
+
+            const styles = [];
+            document.querySelectorAll('.filter-group:nth-child(3) input[type="checkbox"]:checked').forEach(cb => {
+                styles.push(cb.value);
+            });
+
+            const maxPrice = parseInt(document.getElementById('priceRange').value);
+            const rating = document.querySelector('input[name="rating"]:checked')?.value || 'all';
+            const sort = document.getElementById('sortSelect').value;
+
+            return { categories, styles, maxPrice, rating, sort };
+        }
+
+        // ----- Fetch Products from Backend -----
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/products`);
+                if (response.ok) {
+                    allProducts = await response.json();
+                    applyFilters();
+                } else {
+                    console.error('Failed to fetch products:', response.status);
+                    document.getElementById('productGrid').innerHTML = `
+                        <div class="no-products">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Could not load products</h3>
+                            <p>Please check your internet connection or try again later.</p>
+                            <button class="btn btn-primary" onclick="fetchProducts()">Retry</button>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error('Network error fetching products:', err);
+                document.getElementById('productGrid').innerHTML = `
+                    <div class="no-products">
+                        <i class="fas fa-wifi"></i>
+                        <h3>Network Error</h3>
+                        <p>Could not connect to the server. Please check your connection.</p>
+                        <button class="btn btn-primary" onclick="fetchProducts()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ----- Apply Filters -----
+        function applyFilters() {
+            const filters = getFilters();
+            let filtered = [...allProducts];
+
+            // Category filter
+            if (filters.categories.length > 0) {
+                filtered = filtered.filter(p => filters.categories.includes(p.category));
+            }
+
+            // Style filter
+            if (filters.styles.length > 0) {
+                filtered = filtered.filter(p => filters.styles.includes(p.style));
+            }
+
+            // Price filter
+            filtered = filtered.filter(p => p.price <= filters.maxPrice);
+
+            // Rating filter
+            if (filters.rating !== 'all') {
+                filtered = filtered.filter(p => p.rating >= parseInt(filters.rating));
+            }
+
+            // Sorting
+            switch (filters.sort) {
+                case 'price-low':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+                case 'popular':
+                    filtered.sort((a, b) => b.reviews - a.reviews);
+                    break;
+                default: // newest
+                    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            }
+
+            // Update counts
+            document.getElementById('totalCount').textContent = filtered.length;
+            document.getElementById('shownCount').textContent = Math.min(filtered.length, itemsPerPage);
+
+            // Update active filters display
+            updateActiveFilters(filters);
+
+            // Paginate
+            const start = (currentPage - 1) * itemsPerPage;
+            const paginated = filtered.slice(start, start + itemsPerPage);
+
+            // Render
+            renderProducts(paginated, filtered.length);
+            updatePagination(filtered.length);
+        }
+
+        // ----- Update Active Filters (Tags) -----
+        function updateActiveFilters(filters) {
+            const container = document.getElementById('activeFilters');
+            let tags = [];
+
+            if (filters.categories.length > 0) {
+                tags.push('Category: ' + filters.categories.join(', '));
+            }
+            if (filters.styles.length > 0) {
+                tags.push('Style: ' + filters.styles.join(', '));
+            }
+            if (filters.maxPrice < 200) {
+                tags.push('Max Price: $' + filters.maxPrice);
+            }
+            if (filters.rating !== 'all') {
+                tags.push('Rating: ' + filters.rating + '⭐ & Up');
+            }
+
+            if (tags.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = tags.map(tag =>
+                '<span class="tag">' + tag + ' <i class="fas fa-times" onclick="clearFilters()"></i></span>'
+            ).join('');
+        }
+
+        // ----- Clear All Filters -----
+        function clearFilters() {
+            document.querySelectorAll('.filter-group input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.filter-group input[type="radio"]').forEach(cb => {
+                if (cb.value === 'all') cb.checked = true;
+            });
+            document.getElementById('priceRange').value = 200;
+            document.getElementById('priceLabel').textContent = '$200';
+            document.getElementById('sortSelect').value = 'newest';
+            currentPage = 1;
+            applyFilters();
+        }
+
+        // ----- Render Products -----
+        function renderProducts(products, total) {
+            const grid = document.getElementById('productGrid');
+
+            if (products.length === 0) {
+                grid.innerHTML =
+                    '<div class="no-products"><i class="fas fa-search"></i><h3>No Products Found</h3><p>Try adjusting your filters or search terms.</p><button class="btn btn-primary" onclick="clearFilters()"><i class="fas fa-undo"></i> Clear Filters</button></div>';
+                return;
+            }
+
+            let html = '';
+            products.forEach(product => {
+                const badgeHTML = product.badge ? '<span class="product-badge">' + product.badge + '</span>' : '';
+                const stars = '⭐'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
+
+                html += `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="${product.image || 'https://via.placeholder.com/300x240/lightgray/666?text=No+Image'}" alt="${product.name}" loading="lazy">
+                            ${badgeHTML}
+                        </div>
+                        <div class="product-info">
+                            <h4>${product.name}</h4>
+                            <div class="rating">${stars} (${product.reviews || 0})</div>
+                            <div class="meta">
+                                <span class="price">$${product.price.toFixed(2)}</span>
+                                <a href="product-detail.html?id=${product._id}" class="btn-add">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            document.getElementById('shownCount').textContent = Math.min(products.length, itemsPerPage);
+        }
+
+        // ----- Pagination -----
+        function updatePagination(total) {
+            const totalPages = Math.ceil(total / itemsPerPage);
+            const container = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            html += '<a href="#" class="' + (currentPage === 1 ? 'disabled' : '') + '" onclick="changePage(' + (currentPage -
+                1) + ')"><i class="fas fa-chevron-left"></i></a>';
+
+            for (let i = 1; i <= totalPages; i++) {
+                html += '<a href="#" class="' + (i === currentPage ? 'active' : '') + '" onclick="changePage(' + i +
+                    ')">' + i + '</a>';
+            }
+
+            html += '<a href="#" class="' + (currentPage === totalPages ? 'disabled' : '') + '" onclick="changePage(' + (
+                currentPage + 1) + ')"><i class="fas fa-chevron-right"></i></a>';
+
+            container.innerHTML = html;
+        }
+
+        function changePage(page) {
+            const totalItems = parseInt(document.getElementById('totalCount').textContent);
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            applyFilters();
+        }
+
+        // ----- View Toggle (Grid/List) -----
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-toggle button').forEach(btn => btn.classList.remove('active'));
+            const grid = document.getElementById('productGrid');
+
+            if (view === 'grid') {
+                document.querySelector('.view-toggle button:first-child').classList.add('active');
+                grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(260px, 1fr))';
+            } else {
+                document.querySelector('.view-toggle button:last-child').classList.add('active');
+                grid.style.gridTemplateColumns = '1fr';
+                document.querySelectorAll('.product-card').forEach(card => {
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'row';
+                });
+            }
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch products from backend
+            fetchProducts();
+
+            // Update cart badge
+            if (typeof fetchCartAndUpdateBadge === 'function') {
+                fetchCartAndUpdateBadge();
+            }
+
+            // Update header
+            if (typeof updateHeader === 'function') {
+                updateHeader();
+            }
+
+            // Close filter sidebar on outside click (mobile)
+            document.addEventListener('click', function(e) {
+                const sidebar = document.getElementById('filterSidebar');
+                const toggle = document.querySelector('.filter-toggle');
+                if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('open')) {
+                    if (!sidebar.contains(e.target) && !toggle?.contains(e.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
