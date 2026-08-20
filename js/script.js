@@ -6,9 +6,11 @@
 // PART 0: CONFIGURATION
 // ================================================================
 
-// Backend API Base URL – Local Development ke liye
-// Production mein change karna: 'https://your-backend.onrender.com/api'
-const API_BASE_URL = 'http://localhost:5000/api';
+// Backend API Base URL – Production URL (Render)
+const API_BASE_URL = 'https://pixanithingvault-backend.onrender.com/api';
+
+// Local Development URL (Comment out in production)
+// const API_BASE_URL = 'http://localhost:5000/api';
 
 // ================================================================
 // PART 1: MOBILE NAVIGATION TOGGLE
@@ -135,7 +137,7 @@ function performSearch() {
 // PART 4: USER AUTHENTICATION (Backend API)
 // ================================================================
 
-// ----- Open / Close Modal -----
+// ----- Open / Close Modal (For pages that still use modal) -----
 function openUserModal() {
     const modal = document.getElementById('userModal');
     if (modal) { modal.style.display = 'block'; document.body.style.overflow = 'hidden'; }
@@ -263,7 +265,6 @@ function logoutUser() {
     if (window.location.pathname.includes('account.html')) {
         setTimeout(() => window.location.href = 'index.html', 500);
     }
-    // Also trigger auth view on homepage if login section exists
     if (typeof window.showAuthView === 'function') {
         window.showAuthView();
     }
@@ -504,19 +505,11 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 PixanithingVault - DOM Loaded');
     console.log(`🔗 Backend API URL: ${API_BASE_URL}`);
 
-    // Initialize sample data for account page
     addSampleData();
-
-    // Update header (login/logout state)
     updateHeader();
-
-    // Update cart badge from backend
     fetchCartAndUpdateBadge();
-
-    // Initialize 3D Flip Carousel
     initCarousel();
 
-    // Search input - live search
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', liveSearch);
@@ -528,7 +521,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close search on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeSearch();
@@ -536,7 +528,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Click outside to close search
     document.addEventListener('click', function(e) {
         const searchBar = document.getElementById('searchBar');
         const searchIcon = document.querySelector('.nav-icons a[onclick*="toggleSearch"]');
@@ -547,7 +538,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Click outside to close user modal
     document.addEventListener('click', function(event) {
         const modal = document.getElementById('userModal');
         if (modal && modal.style.display === 'block') {
@@ -558,7 +548,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Quantity buttons in cart (if present)
     document.querySelectorAll('.qty-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const input = this.parentElement.querySelector('input');
@@ -572,7 +561,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Check if the login section exists on the page
     const authView = document.getElementById('authView');
     if (authView) {
         const token = localStorage.getItem('token');
@@ -617,9 +605,10 @@ console.log('📧 For support: support@pixanithingvault.com');
 console.log('❤️ Thanks for visiting!');
 console.log(`📦 ${products.length} products available for local search`);
 console.log(`🔗 API Base URL: ${API_BASE_URL}`);
-console.log('⚠️ Make sure the backend server is running on port 5000.');
+console.log('⚠️ Make sure the backend server is running.');
 console.log('🔑 Login/Register system is ready.');
 console.log('👤 updateHeader() and renderDashboard() are available.');
+console.log('💬 WhatsApp icon is visible on all pages.');
 
 // ================================================================
 // PART 12: EXPOSE FUNCTIONS TO GLOBAL SCOPE
